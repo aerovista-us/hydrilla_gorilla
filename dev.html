@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hydrilla Gorilla Dev Hub | EchoVerse powered by AV</title>
+  <style>
+    :root{
+      --bg:#071009; --bg2:#0c1510; --panel:#101913; --panel2:#152019; --ink:#efe7ce; --muted:#9eaa97;
+      --line:rgba(239,231,206,.12); --gold:#d4b86a; --moss:#6f8a4e; --red:#b9261a; --green:#2d4631;
+      --ok:#3e9151; --warn:#b9852d; --bad:#9d3a31; --shadow:0 18px 42px rgba(0,0,0,.35); --radius:22px;
+      --radius-sm:14px; --max:1500px;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{
+      margin:0; color:var(--ink); font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(111,138,78,.16), transparent 22%),
+        radial-gradient(circle at top right, rgba(185,38,26,.14), transparent 18%),
+        linear-gradient(180deg, #081009 0%, #060a07 100%);
+      min-height:100vh;
+    }
+    body::before{
+      content:""; position:fixed; inset:0; pointer-events:none;
+      background:
+        repeating-linear-gradient(180deg, rgba(255,255,255,.012) 0 1px, transparent 1px 24px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.01) 0 1px, transparent 1px 64px);
+      opacity:.22; mix-blend-mode:screen;
+    }
+    a{color:inherit;text-decoration:none}
+    .layout{width:min(calc(100% - 24px), var(--max)); margin:18px auto; display:grid; grid-template-columns:290px 1fr; gap:18px}
+    .sidebar,.shell{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02)); border:1px solid var(--line); box-shadow:var(--shadow); border-radius:28px; backdrop-filter: blur(10px)}
+    .sidebar{position:sticky; top:18px; align-self:start; padding:18px; max-height:calc(100vh - 36px); overflow:auto}
+    .brand{padding:16px; border-radius:20px; background:radial-gradient(circle at 50% 22%, rgba(185,38,26,.15), transparent 32%), linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)); border:1px solid var(--line); margin-bottom:14px}
+    .eyebrow{color:var(--gold); text-transform:uppercase; font-size:.75rem; letter-spacing:.16em; font-weight:800; margin-bottom:10px}
+    h1{margin:0; font-size:1.6rem; line-height:1.02; text-transform:uppercase; letter-spacing:.03em}
+    .brand p{color:var(--muted); line-height:1.55; margin:.8rem 0 0; font-size:.95rem}
+    .nav{display:grid; gap:8px; margin:14px 0}
+    .nav a{display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 14px; border-radius:14px; border:1px solid transparent; color:var(--muted); background:rgba(255,255,255,.015)}
+    .nav a:hover,.nav a.active{color:var(--ink); border-color:var(--line); background:rgba(255,255,255,.03)}
+    .mini-stat{padding:12px 14px; border-radius:16px; border:1px solid var(--line); background:rgba(255,255,255,.02); margin-top:10px}
+    .mini-stat b{display:block; color:var(--gold); font-size:.85rem; text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px}
+    .mini-stat span{color:var(--muted); font-size:.93rem}
+    .shell{padding:18px; overflow:hidden}
+    .hero{display:grid; grid-template-columns:1.25fr .9fr; gap:16px; margin-bottom:18px}
+    .hero-card,.panel{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)); border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow)}
+    .hero-card{padding:20px; position:relative; overflow:hidden}
+    .hero-card h2{margin:0; font-size:clamp(1.8rem,4vw,3.2rem); line-height:.95; text-transform:uppercase; letter-spacing:.03em}
+    .hero-card p{color:var(--muted); line-height:1.68; max-width:72ch}
+    .cta-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:16px}
+    .btn{appearance:none; border:1px solid var(--line); background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); color:var(--ink); border-radius:999px; min-height:44px; padding:0 15px; font-weight:700; cursor:pointer}
+    .btn.primary{background:linear-gradient(180deg, rgba(185,38,26,.96), rgba(104,20,15,.96))}
+    .hero-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:18px}
+    .kpi{border:1px solid var(--line); background:rgba(255,255,255,.02); border-radius:18px; padding:14px}
+    .kpi .num{font-size:1.8rem; font-weight:800; letter-spacing:.02em; margin-bottom:6px}
+    .kpi .lab{color:var(--muted); font-size:.9rem; line-height:1.45}
+    .hero-side{padding:18px; display:grid; gap:12px}
+    .status-row{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+    .status{padding:14px; border-radius:16px; border:1px solid var(--line); background:rgba(255,255,255,.02)}
+    .status b{display:block; font-size:.78rem; text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px; color:var(--gold)}
+    .status span{font-size:1.3rem; font-weight:800}
+    .ok{color:#81db8c}.warn{color:#efc15f}.bad{color:#ea7b70}
+    .section{margin-top:18px; scroll-margin-top:20px}
+    .section-head{display:flex; align-items:end; justify-content:space-between; gap:12px; margin-bottom:12px}
+    .section-head h3{margin:0; font-size:1.45rem; text-transform:uppercase; letter-spacing:.05em}
+    .section-head p{margin:0; color:var(--muted); line-height:1.6; max-width:82ch}
+    .grid-2{display:grid; grid-template-columns:1.1fr .9fr; gap:14px}
+    .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+    .grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:12px}
+    .panel{padding:16px}
+    .panel h4{margin:0 0 10px; text-transform:uppercase; letter-spacing:.07em; font-size:.95rem; color:var(--gold)}
+    .muted{color:var(--muted)}
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{border:1px solid var(--line); background:rgba(255,255,255,.02); border-radius:999px; padding:8px 10px; font-size:.82rem; color:var(--muted)}
+    .board{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+    .col{border:1px solid var(--line); border-radius:18px; padding:12px; background:rgba(255,255,255,.02)}
+    .col h5{margin:0 0 10px; text-transform:uppercase; letter-spacing:.09em; font-size:.78rem; color:var(--gold)}
+    .task{border:1px solid var(--line); border-radius:14px; padding:12px; background:rgba(5,9,6,.55); margin-bottom:10px}
+    .task:last-child{margin-bottom:0}
+    .task .top{display:flex; align-items:start; justify-content:space-between; gap:8px; margin-bottom:8px}
+    .task b{font-size:.96rem}
+    .task p{margin:0; color:var(--muted); line-height:1.52; font-size:.92rem}
+    .tag{display:inline-flex; align-items:center; border-radius:999px; font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; padding:6px 8px; border:1px solid var(--line); white-space:nowrap}
+    .tag.high{color:#ff9f95}.tag.med{color:#efc15f}.tag.low{color:#8adf98}
+    .asset-toolbar{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:12px}
+    input[type="search"], select, textarea{width:100%; background:#0b120d; color:var(--ink); border:1px solid var(--line); border-radius:14px; padding:12px 14px; font:inherit}
+    textarea{min-height:120px; resize:vertical}
+    .asset-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+    .asset{border:1px solid var(--line); border-radius:18px; overflow:hidden; background:rgba(255,255,255,.02)}
+    .asset .thumb{aspect-ratio:16/9; background:radial-gradient(circle at 50% 35%, rgba(185,38,26,.16), transparent 18%), radial-gradient(circle at 15% 15%, rgba(111,138,78,.18), transparent 22%), linear-gradient(180deg, #0f1812, #0a100c); display:flex; align-items:center; justify-content:center; color:var(--gold); text-transform:uppercase; letter-spacing:.12em; font-size:.8rem; padding:14px; text-align:center}
+    .asset .body{padding:14px}
+    .asset .body b{display:block; margin-bottom:8px}
+    .asset .body code{display:block; color:var(--muted); font-size:.8rem; line-height:1.55; word-break:break-all; margin-bottom:10px}
+    .asset .meta{display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; color:var(--muted); font-size:.8rem}
+    .tree{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space:pre-wrap; line-height:1.55; color:#d7d2be; background:#0b120d; border:1px solid var(--line); border-radius:18px; padding:16px; overflow:auto; max-height:540px}
+    details{border:1px solid var(--line); border-radius:16px; padding:12px 14px; background:rgba(255,255,255,.02)}
+    details+details{margin-top:10px}
+    summary{cursor:pointer; font-weight:700; color:var(--ink); text-transform:uppercase; letter-spacing:.05em}
+    .todo-row{display:flex; gap:10px; align-items:start; padding:10px 0; border-bottom:1px solid rgba(255,255,255,.06)}
+    .todo-row:last-child{border-bottom:0}
+    .todo-row input[type=checkbox]{margin-top:3px; transform:scale(1.18)}
+    .todo-row .txt b{display:block; margin-bottom:4px}
+    .todo-row .txt span{color:var(--muted); font-size:.92rem; line-height:1.45}
+    .prompt-list{display:grid; gap:10px}
+    .prompt{border:1px solid var(--line); border-radius:16px; padding:12px; background:rgba(255,255,255,.02)}
+    .prompt b{display:block; margin-bottom:6px}
+    .prompt p{margin:0; color:var(--muted); line-height:1.55}
+    .footer-note{margin-top:18px; color:var(--muted); font-size:.9rem; line-height:1.6; text-align:center}
+    .small{font-size:.85rem}
+    @media (max-width: 1200px){
+      .layout{grid-template-columns:1fr}
+      .sidebar{position:relative; top:0; max-height:none}
+      .hero,.grid-2,.board,.asset-grid,.grid-3,.grid-4,.status-row{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="eyebrow">EchoVerse powered by AV</div>
+        <h1>HG Dev Hub</h1>
+        <p>Interactive worldbuilding and launch-control page for logos, apparel, stickers, tracks, media, fan art, single covers, roadmap, and asset paths.</p>
+      </div>
+      <nav class="nav">
+        <a href="#overview" class="active">Overview <span>01</span></a>
+        <a href="#launch">Launch plan <span>02</span></a>
+        <a href="#logos">Logo system <span>03</span></a>
+        <a href="#apparel">Apparel lanes <span>04</span></a>
+        <a href="#stickers">Sticker system <span>05</span></a>
+        <a href="#music">Music + covers <span>06</span></a>
+        <a href="#world">Worldbuilding <span>07</span></a>
+        <a href="#assets">Asset registry <span>08</span></a>
+        <a href="#prompts">Prompt bank <span>09</span></a>
+        <a href="#notes">Dev notes <span>10</span></a>
+      </nav>
+      <div class="mini-stat"><b>Suggested first wave</b><span>HG monogram pack, warning sticker set, 4-track cover suite, field report tee, swamp map poster, crowned eye patch mark.</span></div>
+      <div class="mini-stat"><b>Current media root</b><span>./media/audio and ./media/images relative to this page in the Collab root.</span></div>
+    </aside>
+
+    <main class="shell">
+      <section id="overview" class="hero">
+        <div class="hero-card">
+          <div class="eyebrow">Concept launch system</div>
+          <h2>Build the world. Track the pieces. Ship the myth.</h2>
+          <p>This page is built for devs and creative leads to keep the Hydrilla Gorilla launch cohesive across story, music, visuals, merch, sticker packs, cover art, fan art prompts, and deliverables. It is structured like a living build board with launch priorities, asset paths, checklists, concept lanes, and saved notes.</p>
+          <div class="cta-row">
+            <button class="btn primary" id="exportBtn">Export notes JSON</button>
+            <button class="btn" id="resetBtn">Reset local notes</button>
+            <a class="btn" href="./hydrilla_gorilla_echoverse_page.html">Open current public page</a>
+          </div>
+          <div class="hero-grid">
+            <div class="kpi"><div class="num">6</div><div class="lab">Core logo marks defined and ready for iterative design passes.</div></div>
+            <div class="kpi"><div class="num">5</div><div class="lab">Current audio files in tree, including alt versions for Cast Too Far and King of the Weeds.</div></div>
+            <div class="kpi"><div class="num">6</div><div class="lab">Immediate additions identified as highest ROI for launch momentum.</div></div>
+          </div>
+        </div>
+        <div class="hero-side hero-card">
+          <div class="section-head" style="margin:0">
+            <div><h3 style="font-size:1rem; margin:0">Launch readiness</h3><p class="small">Quick visual summary of where the concept stands right now.</p></div>
+          </div>
+          <div class="status-row">
+            <div class="status"><b>Brand system</b><span class="ok">Strong</span></div>
+            <div class="status"><b>Media map</b><span class="warn">Growing</span></div>
+            <div class="status"><b>Store polish</b><span class="warn">Pending</span></div>
+          </div>
+          <div class="panel" style="padding:14px"><h4>Core launch stack</h4><div class="chips"><span class="chip">Music single</span><span class="chip">Narrative cover set</span><span class="chip">Sticker bundle</span><span class="chip">Warning-sign tee</span><span class="chip">Premium hoodie</span><span class="chip">Swamp map poster</span></div></div>
+          <div class="panel" style="padding:14px"><h4>File roots</h4><div class="muted small">Collab root page and relative media paths are already aligned for a single-folder launch environment.</div></div>
+        </div>
+      </section>
+
+      <section id="launch" class="section">
+        <div class="section-head"><div><h3>Launch Plan</h3><p>Priority board for concept-to-launch execution. Check items off and notes persist in local storage on this machine/browser.</p></div></div>
+        <div class="board" id="launchBoard"></div>
+      </section>
+
+      <section id="logos" class="section">
+        <div class="section-head"><div><h3>Core Logo Marks</h3><p>Repeat-use identity system for hoodies, hats, stickers, patches, cover corners, sleeves, and premium minimal placements.</p></div></div>
+        <div class="grid-3" id="logoGrid"></div>
+      </section>
+
+      <section id="apparel" class="section">
+        <div class="section-head"><div><h3>Apparel Graphic Directions</h3><p>Merch lanes grouped by tone so drops can stay coherent: warning-sign, field report, monster-club, and premium minimal.</p></div></div>
+        <div class="grid-2">
+          <div class="panel"><h4>Apparel lanes</h4><div id="apparelLanes"></div></div>
+          <div class="panel">
+            <h4>Immediate garment winners</h4>
+            <div class="todo-row"><input type="checkbox" data-note="garment-hoodie"/><div class="txt"><b>Premium minimal hoodie</b><span>Tiny chest HG monogram, tonal black-on-black crest, sleeve crown-eye repeat.</span></div></div>
+            <div class="todo-row"><input type="checkbox" data-note="garment-warningtee"/><div class="txt"><b>Warning tee</b><span>Recovered signage feel with Don’t Wake the King or Don’t Fish After Dusk.</span></div></div>
+            <div class="todo-row"><input type="checkbox" data-note="garment-fieldreport"/><div class="txt"><b>Field report long sleeve</b><span>Evidence-log graphic with coordinates, moon, drag, depth, snapped-line chart.</span></div></div>
+            <div class="todo-row"><input type="checkbox" data-note="garment-patchhat"/><div class="txt"><b>Patch / hat line</b><span>HG monogram, hook sigil, crowned eye, blackwater seal.</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="stickers" class="section">
+        <div class="section-head"><div><h3>Sticker System</h3><p>Collectible fragments, story artifacts, expressive character energy, and holographic/chrome variants for stronger shelf appeal and bundle logic.</p></div></div>
+        <div class="grid-4" id="stickerGroups"></div>
+      </section>
+
+      <section id="music" class="section">
+        <div class="section-head"><div><h3>Music + Cover Art</h3><p>Track registry, single-cover direction, and current audio files from the provided tree. Paths are relative to the page location in the Collab root.</p></div></div>
+        <div class="grid-2">
+          <div class="panel"><h4>Track registry</h4><div id="trackList"></div></div>
+          <div class="panel"><h4>Current audio files</h4><div id="audioList"></div></div>
+        </div>
+      </section>
+
+      <section id="world" class="section">
+        <div class="section-head"><div><h3>Worldbuilding Graphics</h3><p>Support visuals that make the project feel like a full myth ecosystem instead of just merch and singles.</p></div></div>
+        <div class="grid-3" id="worldGrid"></div>
+      </section>
+
+      <section id="assets" class="section">
+        <div class="section-head"><div><h3>Asset Registry + File Tree</h3><p>Searchable registry with current known paths plus the provided file tree, so devs can keep media mapping clean.</p></div></div>
+        <div class="asset-toolbar">
+          <div style="flex:2; min-width:230px"><input id="assetSearch" type="search" placeholder="Search assets, paths, categories, tracks..." /></div>
+          <div style="flex:1; min-width:180px"><select id="assetFilter"><option value="all">All categories</option><option value="image">Images</option><option value="audio">Audio</option><option value="page">Pages / scripts</option><option value="docs">Docs</option></select></div>
+        </div>
+        <div class="asset-grid" id="assetGrid"></div>
+        <div class="panel" style="margin-top:14px"><h4>Provided file tree</h4><div class="tree" id="fileTree"></div></div>
+      </section>
+
+      <section id="prompts" class="section">
+        <div class="section-head"><div><h3>Prompt Bank + Fan Art Directions</h3><p>Use this to keep future image generations on-theme for logos, apparel marks, cover art, comic frames, fan art, posters, and collector objects.</p></div></div>
+        <div class="grid-2">
+          <div class="panel"><h4>Prompt lanes</h4><div class="prompt-list" id="promptList"></div></div>
+          <div class="panel"><h4>Strong phrases to build from</h4><div class="chips" id="phraseList"></div></div>
+        </div>
+      </section>
+
+      <section id="notes" class="section">
+        <div class="section-head"><div><h3>Dev Notes</h3><p>Local working notes for next steps, blockers, path changes, design decisions, launch timing, SKU planning, or concept pivots.</p></div></div>
+        <div class="grid-2">
+          <div class="panel"><h4>Working notes</h4><textarea id="devNotes" placeholder="Track blockers, decisions, prompts to run, products to build, media path changes, launch thoughts..."></textarea></div>
+          <div class="panel">
+            <h4>Success recipe</h4>
+            <div class="todo-row"><input type="checkbox" data-note="success-brand"/><div class="txt"><b>Lock the logo family</b><span>Monogram, crowned eye, hook sigil, split lily icon, blackwater seal.</span></div></div>
+            <div class="todo-row"><input type="checkbox" data-note="success-covers"/><div class="txt"><b>Complete the 4-track single-cover suite</b><span>Make the music world feel finished and collectible.</span></div></div>
+            <div class="todo-row"><input type="checkbox" data-note="success-stickers"/><div class="txt"><b>Build sticker bundle with clear pack logic</b><span>Signal fragments + warning signs + chrome badge lane.</span></div></div>
+            <div class="todo-row"><input type="checkbox" data-note="success-merch"/><div class="txt"><b>Launch one premium garment and one loud garment</b><span>Premium minimal hoodie plus a warning-sign or field-report tee.</span></div></div>
+            <div class="todo-row"><input type="checkbox" data-note="success-page"/><div class="txt"><b>Upgrade public landing page</b><span>Embed final audio, images, comic frames, and store links.</span></div></div>
+          </div>
+        </div>
+        <div class="footer-note">Hydrilla Gorilla Dev Hub — a living planning page for a killer, cohesive concept launch.</div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const launchColumns = [
+      {title:"Now",items:[
+        {title:"HG monogram pack",priority:"high",body:"Create clean premium monogram variants for chest hits, hats, embroidery, sleeve use, and icon corners."},
+        {title:"Warning sign sticker set",priority:"high",body:"Fastest brandable expansion: Don’t Wake the King, Don’t Fish After Dusk, Blackwater Warning Area."},
+        {title:"4-track narrative cover suite",priority:"high",body:"Complete visual identity for the release arc: dock, hunt, clash, aftermath."}
+      ]},
+      {title:"Next",items:[
+        {title:"Field report tee graphic",priority:"med",body:"Evidence-log shirt with line weights, coordinates, moon, weather, snapped rod notes."},
+        {title:"Swamp map poster",priority:"med",body:"Old dock, broken launch, weed crown basin, red-eye channel, snag flats, no-cast pocket."},
+        {title:"Crowned eye patch mark",priority:"med",body:"Essential for hats, patch sets, sleeves, sticker corners, and premium minimal applications."}
+      ]},
+      {title:"Expansion",items:[
+        {title:"Trading card series",priority:"low",body:"Hydrilla Gorilla, The Hunter, Rumor Dock, Red Eye Sighting, Blackwater Breach, The Last Cast."},
+        {title:"Bait-shop flyer props",priority:"low",body:"Recovered warning poster, challenge flyer, sketch sheet, unreadable contact number."},
+        {title:"Fan art campaign",priority:"low",body:"Prompt pack for creature interpretations, hunter scenes, and ambiguity-driven witness art."}
+      ]}
+    ];
+
+    const logoMarks = [
+      ["Hydrilla Gorilla crest","Main emblem for hoodies, hats, stickers, patches, and cover corners."],
+      ["HG monogram","Clean two-letter mark for embroidery, sleeves, chest hits, and minimalist use."],
+      ["Crowned eye mark","Red eye + weed crown. Strong icon for fan identity and premium minimal merch."],
+      ["Hook sigil","Fishing hook shaped into a swamp glyph or crown-like rune."],
+      ["Lily split icon","Simple lily pad icon with a violent slash / wake through it."],
+      ["Blackwater seal","Round badge mark, regional outlaw or fishing-club feel."]
+    ];
+
+    const apparelLanes = [
+      {title:"Warning-sign apparel",uses:"Back-print tees, washed hoodies, work-shirt style fronts, stickers, patches.",ideas:["DON’T WAKE THE KING","DON’T FISH AFTER DUSK","BLACKWATER WARNING AREA","OLD POND / NO ENTRY / AFTER DARK"]},
+      {title:"Field report apparel",uses:"Long sleeves, oversized tees, collectors drops.",ideas:["specimen file layout","snapped line chart","witness notes","weather / moon / drag / depth stats","last cast coordinates"]},
+      {title:"Monster-club apparel",uses:"Bold front graphics, varsity / streetwear layouts, stacked type designs.",ideas:["KING OF THE WEEDS","IN THE REEDS","CAST TOO FAR","SOME GET SWALLOWED","WHOLE SWAMP KNOW"]},
+      {title:"Minimal premium apparel",uses:"Wearable lane beyond novelty merch.",ideas:["tiny chest HG monogram","sleeve crown-eye repeat","inside collar lyric line","tonal black-on-black crest"]}
+    ];
+
+    const stickerGroups = [
+      {title:"Signal fragments",items:["red eye only","hook only","swamp crown","split lily pad","drag-scream waveform","IN THE REEDS","DON’T GO DEEP","CAST TOO FAR"]},
+      {title:"Story artifacts",items:["missing lure packet","snapped rod warning card","muddy boot print","boat permit parody","witnessed breach stamp","weathered evidence tag"]},
+      {title:"Character energy",items:["Hydrilla Gorilla silhouette","hunter waist-deep in water","old timer on dock","monster eye under pads","boat entering fog"]},
+      {title:"Chrome / holo",items:["eye flash in lightning","breach wake ring","foil crown icon","silver hook sigil","swamp-warning badge"]}
+    ];
+
+    const tracks = [
+      {title:"Every Pond’s Got Its Monster",art:"Old dock, rain rings, dim lantern, broken rod, black water."},
+      {title:"Hunt Them Down",art:"Boat cutting through hydrilla at night, flashlight beam swallowed in fog."},
+      {title:"Pull Me Down",art:"Violent lightning scene, taut line, spray, partial creature reveal."},
+      {title:"The Swamp Always Knows",art:"Slack line at dawn, bent reeds, aftermath, no clear winner."},
+      {title:"King of the Weeds",art:"Crowned monster presence beneath lily pads, high contrast, red eye focal point."},
+      {title:"Cast Too Far",art:"Hook landing where it should not have, black ripple expanding outward."},
+      {title:"In the Reeds",art:"Minimal, graphic, hypnotic cover with eye + reeds + dark space."}
+    ];
+
+    const audioFiles = [
+      "./media/audio/cast-too-far.mp3",
+      "./media/audio/cast-toofar.1.mp3",
+      "./media/audio/in-the-reeds.mp3",
+      "./media/audio/king-of-the-weeds.1.mp3",
+      "./media/audio/king-of-the-weeds.mp3"
+    ];
+
+    const worldItems = [
+      ["Swamp map","Stylized fictional map of the pond and danger zones: old dock, broken launch, weed crown basin, red-eye channel, snag flats, no-cast pocket."],
+      ["Legend timeline","Visual sightings history: first snapped pole, first red-eye report, vanished bait string, breach night, tagged / unconfirmed ending."],
+      ["Witness board","Conspiracy wall feel: photos, lure fragments, weather notes, hand-written claims, old beer labels, line weights circled in red."],
+      ["Bait-shop flyer","AFTER-DARK CASTS DISCOURAGED warning sheet, reward / challenge poster, creature sketch, unreadable contact."],
+      ["Patch set","HG monogram, crown eye, warning badge, hook sigil."],
+      ["Trading card series","Hydrilla Gorilla, The Hunter, Rumor Dock, Red Eye Sighting, Blackwater Breach, The Old Timer, Snapped Line, The Last Cast."]
+    ];
+
+    const promptLanes = [
+      {title:"Logo prompt lane",body:"Build clean blackwater identity marks with premium restraint: HG monogram, crowned eye, hook sigil, split lily icon, blackwater seal. Strong shape language, embroidery-friendly silhouettes, subtle swamp aggression."},
+      {title:"Single-cover prompt lane",body:"Create track-by-track cover art with distinct visual lanes while staying inside the same blackwater myth universe. Use rain, reeds, lightning, fog, old dock textures, and high-contrast focal points."},
+      {title:"Sticker prompt lane",body:"Design collectible sticker sets that feel like signal fragments, warning signage, or recovered field evidence. Mix graphic icons, text-forward slogans, and weathered object ephemera."},
+      {title:"Fan art prompt lane",body:"Lean into ambiguity. Creature can be giant bass-monster hybrid, ancient swamp guardian, weed-armored beast, silhouette-only myth, or reflection that does not match reality."},
+      {title:"Poster / prop prompt lane",body:"Build worldbuilding artifacts: swamp maps, bait-shop flyers, witness boards, challenge posters, evidence tags, radio-flyer scraps, trading cards, and session posters."}
+    ];
+
+    const phrases = ["King of the Weeds","In the Reeds","Cast Too Far","Don’t Go Deep","Don’t Wake the King","The Swamp Always Knows","Some Get Swallowed","Whole Swamp Know","Red Eye Low","After Dusk","Blackwater Breach","Every Pond’s Got Its Monster"];
+
+    const assets = [
+      {name:"hydrilla_gorilla_echoverse_page.html",path:"./hydrilla_gorilla_echoverse_page.html",category:"page",note:"Current public-facing themed release page."},
+      {name:"rumor.aac",path:"./rumor.aac",category:"audio",note:"Audio asset in Collab root."},
+      {name:"update_media_paths.py",path:"./update_media_paths.py",category:"page",note:"Utility script for media path updates."},
+      {name:"update_media_paths_log.txt",path:"./update_media_paths_log.txt",category:"docs",note:"Path update log."},
+      {name:"_replace_log.txt",path:"./_replace_log.txt",category:"docs",note:"Replacement log."},
+      {name:"comic-blackwater.png",path:"./media/images/comic-blackwater.png",category:"image",note:"Comic panel asset."},
+      {name:"comic-red-eye.png",path:"./media/images/comic-red-eye.png",category:"image",note:"Comic panel asset."},
+      {name:"comic-rumor-dock.png",path:"./media/images/comic-rumor-dock.png",category:"image",note:"Comic panel asset."},
+      {name:"comic-sharpening-hooks.png",path:"./media/images/comic-sharpening-hooks.png",category:"image",note:"Comic panel asset."},
+      {name:"comic-swamp-score.png",path:"./media/images/comic-swamp-score.png",category:"image",note:"Comic panel asset."},
+      {name:"crest.png",path:"./media/images/crest.png",category:"image",note:"Core crest mark."},
+      {name:"hg-logo.png",path:"./media/images/hg-logo.png",category:"image",note:"HG logo image."},
+      {name:"hg-swampthing.png",path:"./media/images/hg-swampthing.png",category:"image",note:"Creature / hero visual."},
+      {name:"sticker-pack-1.png",path:"./media/images/sticker-pack-1.png",category:"image",note:"Sticker collection pack 1."},
+      {name:"sticker-pack-2.png",path:"./media/images/sticker-pack-2.png",category:"image",note:"Sticker collection pack 2."},
+      {name:"stickerpck-1.png",path:"./media/images/stickerpck-1.png",category:"image",note:"Possible duplicate / typo asset to resolve."},
+      {name:"cast-too-far.mp3",path:"./media/audio/cast-too-far.mp3",category:"audio",note:"Primary Cast Too Far mix."},
+      {name:"cast-toofar.1.mp3",path:"./media/audio/cast-toofar.1.mp3",category:"audio",note:"Alternate Cast Too Far version; naming cleanup candidate."},
+      {name:"in-the-reeds.mp3",path:"./media/audio/in-the-reeds.mp3",category:"audio",note:"Addictive HG-theme single candidate."},
+      {name:"king-of-the-weeds.1.mp3",path:"./media/audio/king-of-the-weeds.1.mp3",category:"audio",note:"Alt version for review."},
+      {name:"king-of-the-weeds.mp3",path:"./media/audio/king-of-the-weeds.mp3",category:"audio",note:"Main single-ready version."},
+      {name:"README.md",path:"./images/README.md",category:"docs",note:"Image folder readme."},
+      {name:"README.md",path:"./media/audio/README.md",category:"docs",note:"Audio folder readme."}
+    ];
+
+    const fileTree = `\\100.115.9.61\Collab.
+│   hydrilla_gorilla_echoverse_page.html
+│   rumor.aac
+│   update_media_paths.py
+│   update_media_paths_log.txt
+│   _replace_log.txt
+│
+├───docs
+├───images
+│       README.md
+│
+└───media
+    ├───audio
+    │       cast-too-far.mp3
+    │       cast-toofar.1.mp3
+    │       in-the-reeds.mp3
+    │       king-of-the-weeds.1.mp3
+    │       king-of-the-weeds.mp3
+    │       README.md
+    │
+    ├───images
+    │       comic-blackwater.png
+    │       comic-red-eye.png
+    │       comic-rumor-dock.png
+    │       comic-sharpening-hooks.png
+    │       comic-swamp-score.png
+    │       crest.png
+    │       hg-logo.png
+    │       hg-swampthing.png
+    │       sticker-pack-1.png
+    │       sticker-pack-2.png
+    │       stickerpck-1.png
+    │
+    └───sticker-packs`;
+
+    const storeKey = "hg-dev-hub-v1";
+
+    function saveState(){
+      const state = {
+        notes: document.getElementById("devNotes").value,
+        checks: [...document.querySelectorAll("input[type=checkbox][data-note]")].reduce((acc,el)=>{acc[el.dataset.note]=el.checked; return acc;}, {})
+      };
+      localStorage.setItem(storeKey, JSON.stringify(state));
+    }
+
+    function loadState(){
+      const raw = localStorage.getItem(storeKey);
+      if(!raw) return;
+      try{
+        const state = JSON.parse(raw);
+        if(state.notes) document.getElementById("devNotes").value = state.notes;
+        document.querySelectorAll("input[type=checkbox][data-note]").forEach(el=>{el.checked = !!(state.checks && state.checks[el.dataset.note]);});
+      }catch(err){}
+    }
+
+    function exportState(){
+      const raw = localStorage.getItem(storeKey) || "{}";
+      const blob = new Blob([raw], {type:"application/json"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "hydrilla-gorilla-dev-notes.json";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function renderBoard(){
+      const root = document.getElementById("launchBoard");
+      root.innerHTML = launchColumns.map(col => `<div class="col"><h5>${col.title}</h5>${col.items.map(item => `<div class="task"><div class="top"><b>${item.title}</b><span class="tag ${item.priority}">${item.priority}</span></div><p>${item.body}</p></div>`).join("")}</div>`).join("");
+    }
+
+    function renderLogoGrid(){
+      document.getElementById("logoGrid").innerHTML = logoMarks.map(([title,body]) => `<div class="panel"><h4>${title}</h4><div class="muted">${body}</div></div>`).join("");
+    }
+
+    function renderApparelLanes(){
+      document.getElementById("apparelLanes").innerHTML = apparelLanes.map(lane => `<details open><summary>${lane.title}</summary><div class="muted" style="margin:10px 0">${lane.uses}</div><div class="chips">${lane.ideas.map(x=>`<span class="chip">${x}</span>`).join("")}</div></details>`).join("");
+    }
+
+    function renderStickerGroups(){
+      document.getElementById("stickerGroups").innerHTML = stickerGroups.map(group => `<div class="panel"><h4>${group.title}</h4><div class="chips">${group.items.map(item=>`<span class="chip">${item}</span>`).join("")}</div></div>`).join("");
+    }
+
+    function renderTracks(){
+      document.getElementById("trackList").innerHTML = tracks.map((t, i) => `<div class="task"><div class="top"><b>${String(i+1).padStart(2,"0")} · ${t.title}</b><span class="tag low">cover lane</span></div><p>${t.art}</p></div>`).join("");
+      document.getElementById("audioList").innerHTML = audioFiles.map(path => `<div class="task"><div class="top"><b>${path.split("/").pop()}</b><span class="tag med">audio</span></div><code>${path}</code><audio controls preload="none" style="width:100%; margin-top:10px"><source src="${path}" type="audio/mpeg" /></audio></div>`).join("");
+    }
+
+    function renderWorld(){
+      document.getElementById("worldGrid").innerHTML = worldItems.map(([title,body]) => `<div class="panel"><h4>${title}</h4><div class="muted">${body}</div></div>`).join("");
+    }
+
+    function renderPrompts(){
+      document.getElementById("promptList").innerHTML = promptLanes.map(p => `<div class="prompt"><b>${p.title}</b><p>${p.body}</p></div>`).join("");
+      document.getElementById("phraseList").innerHTML = phrases.map(p => `<span class="chip">${p}</span>`).join("");
+    }
+
+    function renderAssets(){
+      const q = document.getElementById("assetSearch").value.trim().toLowerCase();
+      const f = document.getElementById("assetFilter").value;
+      const filtered = assets.filter(a => {
+        const okFilter = f === "all" ? true : a.category === f;
+        const hay = `${a.name} ${a.path} ${a.note} ${a.category}`.toLowerCase();
+        const okSearch = !q || hay.includes(q);
+        return okFilter && okSearch;
+      });
+      document.getElementById("assetGrid").innerHTML = filtered.map(a => `<div class="asset"><div class="thumb">${a.category}</div><div class="body"><b>${a.name}</b><code>${a.path}</code><div class="muted small" style="margin-bottom:10px">${a.note}</div><div class="meta"><span>${a.category}</span><span><a href="${a.path}">open</a></span></div></div></div>`).join("");
+    }
+
+    function bind(){
+      document.getElementById("assetSearch").addEventListener("input", renderAssets);
+      document.getElementById("assetFilter").addEventListener("change", renderAssets);
+      document.getElementById("devNotes").addEventListener("input", saveState);
+      document.querySelectorAll("input[type=checkbox][data-note]").forEach(el=>el.addEventListener("change", saveState));
+      document.getElementById("exportBtn").addEventListener("click", exportState);
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        localStorage.removeItem(storeKey);
+        document.getElementById("devNotes").value = "";
+        document.querySelectorAll("input[type=checkbox][data-note]").forEach(el=>el.checked = false);
+      });
+      document.querySelectorAll(".nav a").forEach(a=>{
+        a.addEventListener("click", ()=>{
+          document.querySelectorAll(".nav a").forEach(x=>x.classList.remove("active"));
+          a.classList.add("active");
+        });
+      });
+    }
+
+    renderBoard();
+    renderLogoGrid();
+    renderApparelLanes();
+    renderStickerGroups();
+    renderTracks();
+    renderWorld();
+    renderPrompts();
+    document.getElementById("fileTree").textContent = fileTree;
+    renderAssets();
+    loadState();
+    bind();
+  </script>
+</body>
+</html>
