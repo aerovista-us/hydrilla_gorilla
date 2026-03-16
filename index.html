@@ -291,8 +291,72 @@
       border:1px solid var(--line); border-radius:18px; padding:16px;
       background:rgba(255,255,255,.02);
     }
+    .mini-thumb {
+      width:100%; border-radius:14px; margin-bottom:10px;
+      border:1px solid rgba(239,231,207,.16); background:#090c09; object-fit:cover; display:block;
+    }
     .mini h4 { margin:0 0 8px; text-transform:uppercase; letter-spacing:.05em; font-size:1rem; }
     .mini p { margin:0; color:var(--muted); line-height:1.55; font-size:.95rem; }
+    .apparel-hero {
+      margin:0 0 18px;
+      border-radius:20px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:#050706;
+      box-shadow:var(--shadow);
+    }
+    .apparel-hero img {
+      display:block;
+      width:100%;
+      height:auto;
+      object-fit:cover;
+    }
+    .apparel-hero .caption {
+      padding:12px 16px 14px;
+      font-size:.92rem;
+    }
+    .comic-extra {
+      margin-top:18px;
+    }
+    .comic-extra summary {
+      cursor:pointer;
+      list-style:none;
+      outline:none;
+      font-size:.9rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .comic-extra summary::marker { display:none; }
+    .comic-extra summary::-webkit-details-marker { display:none; }
+    .comic-extra summary span.dot {
+      width:8px; height:8px; border-radius:50%;
+      background:var(--accent-2);
+    }
+    .comic-extra-inner {
+      margin-top:12px;
+      padding:14px 16px 6px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      box-shadow:var(--shadow);
+    }
+    .comic-extra-panel {
+      margin-bottom:10px;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid rgba(239,231,207,.16);
+      background:#050706;
+    }
+    .comic-extra-panel img {
+      display:block;
+      width:100%;
+      height:auto;
+      object-fit:cover;
+    }
     .footer { padding:38px 0 60px; color:var(--muted); }
     .footer .panel {
       padding:20px;
@@ -402,6 +466,14 @@
           <img src="images/swamp-map.png" alt="Hydrilla Gorilla Backwater Depths map — Old Dock, Weed Crown Basin, Red Eye Channel" />
           <figcaption class="caption">Backwater Depths. Old Dock, Weed Crown Basin, Broken Launch, Snag Flats, Red Eye Channel, no-cast pocket.</figcaption>
         </figure>
+        <figure class="item">
+          <img src="images/patch-set.png" alt="Hydrilla Gorilla patch set — HG logo, crowned eye, warning badge, hook insignia" />
+          <figcaption class="caption">Patch set evidence. HG monogram, crowned eye, warning badge, and hook sigil captured as embroidered field marks.</figcaption>
+        </figure>
+        <figure class="item">
+          <img src="images/bait-shop-flyer.png" alt="After-dark casts discouraged — Hydrilla Zone warning poster" />
+          <figcaption class="caption">Bait-shop flyer. AFTER-DARK CASTS DISCOURAGED — recovered warning sheet turned case-file artifact.</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -465,6 +537,26 @@
           </div>
         </article>
       </div>
+      <details class="comic-extra">
+        <summary><span class="dot"></span> Season 00 · Ep. 01 — Every Pond’s Got Its Monster (cells 1–5)</summary>
+        <div class="comic-extra-inner">
+          <div class="comic-extra-panel">
+            <img src="images/s00ep01cell1.png" alt="Season 00 Episode 1, Cell 1 — Hydrilla Gorilla dock scene, BAIT BEER LIES sign, rain and red eyes on the water." />
+          </div>
+          <div class="comic-extra-panel">
+            <img src="images/s00ep01cell2.png" alt="Season 00 Episode 1, Cell 2 — empty dock at night, lantern over blackwater and rain rings." />
+          </div>
+          <div class="comic-extra-panel">
+            <img src="images/s00ep01cell3.png" alt="Season 00 Episode 1, Cell 3 — two locals at the dock table saying Every pond’s got its monster. This one’s got a name." />
+          </div>
+          <div class="comic-extra-panel">
+            <img src="images/s00ep01cell4.png" alt="Season 00 Episode 1, Cell 4 — shape moving under the pads; Folks called it bass at first. Bass don’t move like that." />
+          </div>
+          <div class="comic-extra-panel">
+            <img src="images/s00ep01cell5.png" alt="Season 00 Episode 1, Cell 5 — violent strike and splash; One man swore he hooked it once. Then the line just vanished." />
+          </div>
+        </div>
+      </details>
     </div>
   </section>
 
@@ -552,9 +644,21 @@
                 <span class="pl-num">1</span>
                 <span class="pl-title">King of the Weeds</span>
               </li>
-              <li data-src="audio/echostory-arc.mp3" data-title="EchoStory arc">
+              <li data-src="audio/echostory-arc.mp3" data-title="Every Pond’s Got Its Monster">
                 <span class="pl-num">2</span>
-                <span class="pl-title">EchoStory arc (4-track saga)</span>
+                <span class="pl-title">Every Pond’s Got Its Monster</span>
+              </li>
+              <li data-src="audio/echostory-arc.mp3" data-title="Hunt Them Down">
+                <span class="pl-num">3</span>
+                <span class="pl-title">Hunt Them Down</span>
+              </li>
+              <li data-src="audio/echostory-arc.mp3" data-title="Pull Me Down">
+                <span class="pl-num">4</span>
+                <span class="pl-title">Pull Me Down</span>
+              </li>
+              <li data-src="audio/echostory-arc.mp3" data-title="The Swamp Always Knows">
+                <span class="pl-num">5</span>
+                <span class="pl-title">The Swamp Always Knows</span>
               </li>
             </ul>
           </div>
@@ -571,7 +675,7 @@
           <div class="track-card">
             <div class="track-top">
               <b>EchoStory arc playlist</b>
-              <span class="pill">4-track saga</span>
+              <span class="pill">4-track arc</span>
             </div>
             <button type="button" class="track-play-btn" data-track="1" aria-label="Play in main player">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -608,8 +712,8 @@
     <div class="wrap">
       <div class="section-head">
         <div>
-          <h2>Sticker Collections</h2>
-          <div class="sub">Field-pack style product presentation for EchoVerse powered by AV. Each sheet feels like evidence recovered from the swamp.</div>
+          <h2>Field Evidence & Stickers</h2>
+          <div class="sub">Sticker sheets and bundle visuals from the Hydrilla Gorilla release — the stuff you’d peel off bait buckets, amp cases, and dock rails.</div>
         </div>
       </div>
       <div class="gallery">
@@ -626,48 +730,8 @@
           <figcaption class="caption">Pack 2 — King of the Weeds: crown icons, red-eye motifs, breach energy, and dominance slogans.</figcaption>
         </figure>
         <figure class="item">
-          <img src="images/crest.png" alt="Hydrilla Gorilla crest" />
-          <figcaption class="caption">Core crest — hero mark for hoodies, badges, patch embroidery, and premium drop placement.</figcaption>
-        </figure>
-        <figure class="item">
-          <img src="images/patch-set.png" alt="Hydrilla Gorilla patch set — HG logo, crowned eye, DO NOT CAST HERE AFTER DUSK, anchor" />
-          <figcaption class="caption">Patch set. HG crest, crowned eye, warning sign, and ornate anchor — embroidered drops.</figcaption>
-        </figure>
-        <figure class="item">
-          <img src="images/bait-shop-flyer.png" alt="After-dark casts discouraged — Hydrilla Zone warning poster" />
-          <figcaption class="caption">Bait-shop flyer. AFTER-DARK CASTS DISCOURAGED. Unknown presence, Hydrilla Zone — reward for verified proof.</figcaption>
-        </figure>
-        <figure class="item">
           <img src="images/trading-card-series.png" alt="Hydrilla Gorilla trading card series — six panels" />
-          <figcaption class="caption">Trading card series. Hydrilla Gorilla, The Hunter, Rumor Dock, Red Eye Sighting, Blackwater Breach, Snapped Line.</figcaption>
-        </figure>
-        <figure class="item">
-          <img src="images/merch-line-showcase.png" alt="Merch line showcase" />
-          <figcaption class="caption">Merch line showcase.</figcaption>
-        </figure>
-        <figure class="item">
-          <img src="images/crowned-eye-mark.png" alt="Crowned eye mark" />
-          <figcaption class="caption">Crowned eye mark.</figcaption>
-        </figure>
-        <figure class="item">
-          <img src="images/blackwater-seal.png" alt="Blackwater seal" />
-          <figcaption class="caption">Blackwater seal.</figcaption>
-        </figure>
-        <figure class="item">
-          <img src="images/lily-split.png" alt="Lily split" />
-          <figcaption class="caption">Lily split.</figcaption>
-        </figure>
-        <figure class="item">
-          <img src="images/hook-sigil.png" alt="Hook sigil" />
-          <figcaption class="caption">Hook sigil.</figcaption>
-        </figure>
-        <figure class="item">
-          <img src="images/hg-monogram.png" alt="HG monogram" />
-          <figcaption class="caption">HG monogram.</figcaption>
-        </figure>
-        <figure class="item">
-          <img src="images/hg-crest.png" alt="HG crest" />
-          <figcaption class="caption">HG crest.</figcaption>
+          <figcaption class="caption">Trading card series — six-card spread that threads Rumor Dock, Red Eye sightings, Blackwater Breach, and aftermath into one collectible lane.</figcaption>
         </figure>
       </div>
     </div>
@@ -682,22 +746,26 @@
         </div>
       </div>
       <div class="panel drop">
+        <figure class="apparel-hero">
+          <img src="images/merch-line-showcase.png" alt="Hydrilla Gorilla merch line showcase — warning-sign, field report, monster-club, and minimal premium apparel lanes." />
+          <figcaption class="caption">Merch line showcase — warning-sign apparel, field report pieces, monster-club jackets, and minimal premium HG fits in one grid.</figcaption>
+        </figure>
         <div class="drop-grid">
           <article class="mini">
-            <h4>Hero hoodie</h4>
-            <p>Large back crest, small front chest eye mark, washed black or swamp green blank, premium heavy fleece.</p>
+            <h4>Warning-sign apparel</h4>
+            <p>Don’t Wake the King and AFTER DARK warnings as back-print tees and hoodies pulled straight from the merch grid above.</p>
           </article>
           <article class="mini">
-            <h4>Warning tee</h4>
-            <p>Front graphic: Don’t Wake the King. Back neck hit with EchoVerse powered by AV.</p>
+            <h4>Field report lane</h4>
+            <p>Evidence-log long sleeves and tees — coordinates, depth stats, snapped-line charts, and Blackwater micro-text.</p>
           </article>
           <article class="mini">
-            <h4>Sticker bundle</h4>
-            <p>Two themed packs sold together with a numbered backing card like recovered field evidence.</p>
+            <h4>Monster-club pieces</h4>
+            <p>Varsity jackets, patches, and bold fronts for the ones who keep casting after dusk.</p>
           </article>
           <article class="mini">
-            <h4>Patch / hat line</h4>
-            <p>Crowned eye, hook insignia, and minimalist HG marks for embroidered drops.</p>
+            <h4>Minimal premium line</h4>
+            <p>Tonal HG monograms, subtle crest hits, and washed blanks built to live past the campaign.</p>
           </article>
         </div>
       </div>
