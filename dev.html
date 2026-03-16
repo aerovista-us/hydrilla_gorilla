@@ -147,7 +147,7 @@
           <div class="cta-row">
             <button class="btn primary" id="exportBtn">Export notes JSON</button>
             <button class="btn" id="resetBtn">Reset local notes</button>
-            <a class="btn" href="./hydrilla_gorilla_echoverse_page.html">Open current public page</a>
+            <a class="btn" href="\\\\100.115.9.61\\Collab\\mini.shops\\hg\\index.html">Open current public page</a>
           </div>
           <div class="hero-grid">
             <div class="kpi"><div class="num">6</div><div class="lab">Core logo marks defined and ready for iterative design passes.</div></div>
@@ -161,11 +161,11 @@
           </div>
           <div class="status-row">
             <div class="status"><b>Brand system</b><span class="ok">Strong</span></div>
-            <div class="status"><b>Media map</b><span class="warn">Growing</span></div>
+            <div class="status"><b>Media map</b><span class="ok">Live</span></div>
             <div class="status"><b>Store polish</b><span class="warn">Pending</span></div>
           </div>
-          <div class="panel" style="padding:14px"><h4>Core launch stack</h4><div class="chips"><span class="chip">Music single</span><span class="chip">Narrative cover set</span><span class="chip">Sticker bundle</span><span class="chip">Warning-sign tee</span><span class="chip">Premium hoodie</span><span class="chip">Swamp map poster</span></div></div>
-          <div class="panel" style="padding:14px"><h4>File roots</h4><div class="muted small">Collab root page and relative media paths are already aligned for a single-folder launch environment.</div></div>
+          <div class="panel" style="padding:14px"><h4>Core launch stack</h4><div class="chips"><span class="chip">Music single (wired)</span><span class="chip">5-track playlist on page</span><span class="chip">Sticker bundle live</span><span class="chip">Lore board & map live</span><span class="chip">Apparel grid hero image</span></div></div>
+          <div class="panel" style="padding:14px"><h4>File roots</h4><div class="muted small">Public page now reads from `./audio`, `./images`, and `./video` while Dev Hub still maps the original `./media` tree for reference.</div></div>
         </div>
       </section>
 
@@ -199,7 +199,7 @@
       </section>
 
       <section id="music" class="section">
-        <div class="section-head"><div><h3>Music + Cover Art</h3><p>Track registry, single-cover direction, and current audio files from the provided tree. Paths are relative to the page location in the Collab root.</p></div></div>
+        <div class="section-head"><div><h3>Music + Cover Art</h3><p>Track registry, single-cover direction, and current audio files from the provided tree. Public page playlist is live (5 conceptual tracks mapped onto King of the Weeds + EchoStory arc mix).</p></div></div>
         <div class="grid-2">
           <div class="panel"><h4>Track registry</h4><div id="trackList"></div></div>
           <div class="panel"><h4>Current audio files</h4><div id="audioList"></div></div>
@@ -239,7 +239,7 @@
             <div class="todo-row"><input type="checkbox" data-note="success-covers"/><div class="txt"><b>Complete the 4-track single-cover suite</b><span>Make the music world feel finished and collectible.</span></div></div>
             <div class="todo-row"><input type="checkbox" data-note="success-stickers"/><div class="txt"><b>Build sticker bundle with clear pack logic</b><span>Signal fragments + warning signs + chrome badge lane.</span></div></div>
             <div class="todo-row"><input type="checkbox" data-note="success-merch"/><div class="txt"><b>Launch one premium garment and one loud garment</b><span>Premium minimal hoodie plus a warning-sign or field-report tee.</span></div></div>
-            <div class="todo-row"><input type="checkbox" data-note="success-page"/><div class="txt"><b>Upgrade public landing page</b><span>Embed final audio, images, comic frames, and store links.</span></div></div>
+            <div class="todo-row"><input type="checkbox" data-note="success-page"/><div class="txt"><b>Upgrade public landing page</b><span>Embed final audio, images, comic frames, and store links. (Playlist, lore grid, stickers, apparel hero, and Season 00 strip are already wired.)</span></div></div>
           </div>
         </div>
         <div class="footer-note">Hydrilla Gorilla Dev Hub — a living planning page for a killer, cohesive concept launch.</div>
@@ -327,29 +327,29 @@
     const phrases = ["King of the Weeds","In the Reeds","Cast Too Far","Don’t Go Deep","Don’t Wake the King","The Swamp Always Knows","Some Get Swallowed","Whole Swamp Know","Red Eye Low","After Dusk","Blackwater Breach","Every Pond’s Got Its Monster"];
 
     const assets = [
-      {name:"hydrilla_gorilla_echoverse_page.html",path:"./hydrilla_gorilla_echoverse_page.html",category:"page",note:"Current public-facing themed release page."},
-      {name:"rumor.aac",path:"./rumor.aac",category:"audio",note:"Audio asset in Collab root."},
-      {name:"update_media_paths.py",path:"./update_media_paths.py",category:"page",note:"Utility script for media path updates."},
-      {name:"update_media_paths_log.txt",path:"./update_media_paths_log.txt",category:"docs",note:"Path update log."},
-      {name:"_replace_log.txt",path:"./_replace_log.txt",category:"docs",note:"Replacement log."},
-      {name:"comic-blackwater.png",path:"./media/images/comic-blackwater.png",category:"image",note:"Comic panel asset."},
-      {name:"comic-red-eye.png",path:"./media/images/comic-red-eye.png",category:"image",note:"Comic panel asset."},
-      {name:"comic-rumor-dock.png",path:"./media/images/comic-rumor-dock.png",category:"image",note:"Comic panel asset."},
-      {name:"comic-sharpening-hooks.png",path:"./media/images/comic-sharpening-hooks.png",category:"image",note:"Comic panel asset."},
-      {name:"comic-swamp-score.png",path:"./media/images/comic-swamp-score.png",category:"image",note:"Comic panel asset."},
-      {name:"crest.png",path:"./media/images/crest.png",category:"image",note:"Core crest mark."},
-      {name:"hg-logo.png",path:"./media/images/hg-logo.png",category:"image",note:"HG logo image."},
-      {name:"hg-swampthing.png",path:"./media/images/hg-swampthing.png",category:"image",note:"Creature / hero visual."},
-      {name:"sticker-pack-1.png",path:"./media/images/sticker-pack-1.png",category:"image",note:"Sticker collection pack 1."},
-      {name:"sticker-pack-2.png",path:"./media/images/sticker-pack-2.png",category:"image",note:"Sticker collection pack 2."},
-      {name:"stickerpck-1.png",path:"./media/images/stickerpck-1.png",category:"image",note:"Possible duplicate / typo asset to resolve."},
-      {name:"cast-too-far.mp3",path:"./media/audio/cast-too-far.mp3",category:"audio",note:"Primary Cast Too Far mix."},
-      {name:"cast-toofar.1.mp3",path:"./media/audio/cast-toofar.1.mp3",category:"audio",note:"Alternate Cast Too Far version; naming cleanup candidate."},
-      {name:"in-the-reeds.mp3",path:"./media/audio/in-the-reeds.mp3",category:"audio",note:"Addictive HG-theme single candidate."},
-      {name:"king-of-the-weeds.1.mp3",path:"./media/audio/king-of-the-weeds.1.mp3",category:"audio",note:"Alt version for review."},
-      {name:"king-of-the-weeds.mp3",path:"./media/audio/king-of-the-weeds.mp3",category:"audio",note:"Main single-ready version."},
-      {name:"README.md",path:"./images/README.md",category:"docs",note:"Image folder readme."},
-      {name:"README.md",path:"./media/audio/README.md",category:"docs",note:"Audio folder readme."}
+      {name:"index.html",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\index.html",category:"page",note:"Current public-facing themed release page (uses ./audio, ./images, ./video)."},
+      {name:"rumor.aac",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\rumor.aac",category:"audio",note:"Audio asset in Collab root."},
+      {name:"update_media_paths.py",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\update_media_paths.py",category:"page",note:"Utility script for media path updates."},
+      {name:"update_media_paths_log.txt",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\update_media_paths_log.txt",category:"docs",note:"Path update log."},
+      {name:"_replace_log.txt",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\_replace_log.txt",category:"docs",note:"Replacement log."},
+      {name:"comic-blackwater.png",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\images\\comic-blackwater.png",category:"image",note:"Comic panel asset."},
+      {name:"comic-red-eye.png",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\images\\comic-red-eye.png",category:"image",note:"Comic panel asset."},
+      {name:"comic-rumor-dock.png",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\images\\comic-rumor-dock.png",category:"image",note:"Comic panel asset."},
+      {name:"comic-sharpening-hooks.png",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\images\\comic-sharpening-hooks.png",category:"image",note:"Comic panel asset."},
+      {name:"comic-swamp-score.png",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\images\\comic-swamp-score.png",category:"image",note:"Comic panel asset."},
+      {name:"crest.png",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\images\\crest.png",category:"image",note:"Core crest mark."},
+      {name:"hg-logo.png",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\images\\hg-logo.png",category:"image",note:"HG logo image."},
+      {name:"hg-swampthing.png",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\images\\hg-swampthing.png",category:"image",note:"Creature / hero visual."},
+      {name:"sticker-pack-1.png",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\images\\sticker-pack-1.png",category:"image",note:"Sticker collection pack 1."},
+      {name:"sticker-pack-2.png",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\images\\sticker-pack-2.png",category:"image",note:"Sticker collection pack 2."},
+      {name:"stickerpck-1.png",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\images\\stickerpck-1.png",category:"image",note:"Possible duplicate / typo asset to resolve."},
+      {name:"cast-too-far.mp3",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\audio\\cast-too-far.mp3",category:"audio",note:"Primary Cast Too Far mix."},
+      {name:"cast-toofar.1.mp3",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\audio\\cast-toofar.1.mp3",category:"audio",note:"Alternate Cast Too Far version; naming cleanup candidate."},
+      {name:"in-the-reeds.mp3",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\audio\\in-the-reeds.mp3",category:"audio",note:"Addictive HG-theme single candidate."},
+      {name:"king-of-the-weeds.1.mp3",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\audio\\king-of-the-weeds.1.mp3",category:"audio",note:"Alt version for review."},
+      {name:"king-of-the-weeds.mp3",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\audio\\king-of-the-weeds.mp3",category:"audio",note:"Main single-ready version."},
+      {name:"README.md",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\images\\README.md",category:"docs",note:"Image folder readme (kept in sync with public page)."},
+      {name:"README.md",path:"\\\\100.115.9.61\\Collab\\mini.shops\\hg\\audio\\README.md",category:"docs",note:"Audio folder readme (documents playlist mapping)."}
     ];
 
     const fileTree = `\\100.115.9.61\Collab.
