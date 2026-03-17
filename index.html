@@ -559,14 +559,14 @@
     .gate-eye{
       position:absolute;
       inset:-40%;
-      opacity:.2;
+      opacity:.28;
       mix-blend-mode:screen;
       pointer-events:none;
     }
     .gate-eye svg{
       width:100%; height:100%;
-      opacity:.7;
-      filter:blur(.4px);
+      opacity:.82;
+      filter:blur(.25px);
     }
     .gate-flash{
       position:fixed;
@@ -587,6 +587,37 @@
       100%{opacity:0;}
     }
 
+    /* Eye: slow, sinister scanning + glow */
+    @keyframes gate-eye-look {
+      0% { transform:translate3d(0,0,0); }
+      12% { transform:translate3d(-2px,-1px,0); }
+      25% { transform:translate3d(3px,1px,0); }
+      38% { transform:translate3d(1px,-2px,0); }
+      52% { transform:translate3d(-3px,2px,0); }
+      70% { transform:translate3d(2px,0,0); }
+      100% { transform:translate3d(0,0,0); }
+    }
+    @keyframes gate-eye-pulse {
+      0%,100% { opacity:1; }
+      30% { opacity:1.2; }
+      60% { opacity:.85; }
+    }
+    @keyframes gate-eye-ring {
+      0% { stroke-width:3.2; stroke-opacity:.5; }
+      40% { stroke-width:4.1; stroke-opacity:.9; }
+      100% { stroke-width:3.2; stroke-opacity:.5; }
+    }
+    .gate-eye-pupil {
+      animation: gate-eye-look 6.5s ease-in-out infinite alternate;
+      transform-origin: center;
+    }
+    .gate-eye-glow {
+      animation: gate-eye-pulse 5.2s ease-in-out infinite;
+    }
+    .gate-eye-ring {
+      animation: gate-eye-ring 7.4s ease-in-out infinite;
+    }
+
     /* Card drop on click */
     @keyframes gate-card-drop {
       0%{transform:translateY(0); opacity:1;}
@@ -594,7 +625,7 @@
       100%{transform:translateY(140vh); opacity:0;}
     }
     .gate-card.drop {
-      animation: gate-card-drop 900ms cubic-bezier(.18,.7,.3,1) forwards;
+      animation: gate-card-drop 1600ms cubic-bezier(.18,.7,.2,1) forwards;
     }
 
     /* Lightning flicker of the background at the big hit (~11s) */
@@ -631,14 +662,31 @@
               <linearGradient id="gateEyeStroke" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stop-color="#f2d274" stop-opacity=".0"/>
                 <stop offset="40%" stop-color="#f2d274" stop-opacity=".7"/>
-                <stop offset="60%" stop-color="#c72618" stop-opacity=".8"/>
+                <stop offset="60%" stop-color="#c72618" stop-opacity=".9"/>
                 <stop offset="100%" stop-color="#f2d274" stop-opacity=".0"/>
               </linearGradient>
+              <radialGradient id="gateEyeIris" cx="50%" cy="45%" r="60%">
+                <stop offset="0%" stop-color="#1a0504"/>
+                <stop offset="40%" stop-color="#3b1110"/>
+                <stop offset="75%" stop-color="#050807"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
             </defs>
-            <path d="M10 60 Q 100 4 190 60 Q 100 116 10 60 Z"
+            <!-- outer socket -->
+            <path class="gate-eye-ring"
+                  d="M10 60 Q 100 4 190 60 Q 100 116 10 60 Z"
                   fill="none" stroke="url(#gateEyeStroke)" stroke-width="3.2" />
-            <circle cx="100" cy="60" r="15" fill="none" stroke="#efe7cf" stroke-width="2.2" />
-            <circle cx="103" cy="56" r="5" fill="#c72618" />
+            <!-- iris / sclera -->
+            <circle cx="100" cy="60" r="19" fill="url(#gateEyeIris)" class="gate-eye-glow" />
+            <circle cx="100" cy="60" r="16" fill="none" stroke="#efe7cf" stroke-width="1.8" opacity=".65" />
+            <!-- animated pupil + slit highlight -->
+            <g class="gate-eye-pupil">
+              <circle cx="103" cy="56" r="6.2" fill="#c72618" />
+              <path d="M101 50 Q103 53 105 50 Q104 56 105 62 Q103 59 101 62 Z"
+                    fill="rgba(5,0,0,.8)" />
+              <path d="M100.5 52 Q102 54 103.5 52"
+                    fill="none" stroke="rgba(255,255,255,.35)" stroke-width="0.7" stroke-linecap="round" />
+            </g>
           </svg>
         </div>
         <div class="gate-eyebrow">EchoVerse entry gate</div>
