@@ -298,6 +298,9 @@
     </div>
   </div>
 
+  <!-- Hidden gate audio, preloaded so click reliably starts playback -->
+  <audio id="gateAudio" src="audio/king-of-the-weeds.mp3" preload="auto"></audio>
+
   <script>
     (function(){
       const firefliesRoot = document.getElementById("fireflies");
@@ -317,18 +320,21 @@
 
       const enterBtn = document.getElementById("enterBtn");
       const flashOverlay = document.getElementById("flashOverlay");
+      const gateAudio = document.getElementById("gateAudio");
       let armed = false;
 
       enterBtn.addEventListener("click", async () => {
         if(armed) return;
         armed = true;
-        const audio = new Audio("audio/king-of-the-weeds.mp3");
-        audio.volume = 0.9;
 
-        try{
-          await audio.play();
-        }catch(err){
-          // if autoplay fails for any reason, still proceed with transition
+        if(gateAudio){
+          try{
+            gateAudio.currentTime = 0;
+            gateAudio.volume = 0.9;
+            await gateAudio.play();
+          }catch(err){
+            // if playback is blocked, still proceed with visual transition
+          }
         }
 
         // lightning-flash style overlay
@@ -337,11 +343,11 @@
         // slight delay so first hit lands before page swap
         setTimeout(() => {
           document.body.classList.add("fade-out");
-        }, 520);
+        }, 900);
 
         setTimeout(() => {
           window.location.href = "home.html";
-        }, 1250);
+        }, 1900);
       });
     })();
   </script>
