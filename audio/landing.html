@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hydrilla Gorilla | Enter the Swamp</title>
+  <link rel="icon" type="image/x-icon" href="favicons/favicon.ico" />
+  <style>
+    :root{
+      --ink:#efe7cf;
+      --muted:#a9a28a;
+      --accent:#c72618;
+      --accent-2:#f2d274;
+      --bg:#020303;
+      --line:rgba(239,231,207,.18);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;width:100%}
+    body{
+      font-family:Inter,system-ui,Arial,sans-serif;
+      background:#000;
+      color:var(--ink);
+      overflow:hidden;
+      position:relative;
+      transition:opacity .6s ease-out, transform .6s ease-out;
+    }
+    body.fade-out{
+      opacity:0;
+      transform:scale(1.02);
+    }
+    .stage{
+      position:fixed; inset:0;
+      background:
+        radial-gradient(circle at 50% -20%, rgba(132,147,75,.16), transparent 55%),
+        radial-gradient(circle at 10% 80%, rgba(199,38,24,.18), transparent 52%),
+        radial-gradient(circle at 90% 90%, rgba(12,24,18,.9), #020303);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .vignette::before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 50% 10%, transparent 0, rgba(0,0,0,.7) 70%),
+        radial-gradient(circle at 0 100%, transparent 0, rgba(0,0,0,.8) 72%),
+        radial-gradient(circle at 100% 100%, transparent 0, rgba(0,0,0,.75) 72%);
+      mix-blend-mode:multiply;
+    }
+    .fireflies{
+      position:fixed; inset:0;
+      overflow:hidden;
+      pointer-events:none;
+      z-index:2;
+    }
+    .firefly{
+      position:absolute;
+      width:4px; height:4px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(242,210,116,1) 0, rgba(242,210,116,.6) 40%, transparent 70%);
+      opacity:0;
+      animation: drift 14s linear infinite, glow 3.4s ease-in-out infinite;
+      filter:blur(.2px);
+    }
+    @keyframes drift{
+      0%{transform:translate3d(0,0,0) scale(.7);}
+      25%{transform:translate3d(40px,-60px,0) scale(1);}
+      50%{transform:translate3d(-30px,-120px,0) scale(.9);}
+      75%{transform:translate3d(20px,-180px,0) scale(1.05);}
+      100%{transform:translate3d(-20px,-260px,0) scale(.8);}
+    }
+    @keyframes glow{
+      0%,100%{opacity:0;}
+      15%{opacity:.9;}
+      35%{opacity:.2;}
+      55%{opacity:.8;}
+      80%{opacity:.3;}
+    }
+    .card{
+      position:relative;
+      z-index:3;
+      max-width:520px;
+      width:100%;
+      padding:28px 24px 24px;
+      border-radius:26px;
+      border:1px solid var(--line);
+      background:
+        radial-gradient(circle at 10% 0, rgba(199,38,24,.18), transparent 50%),
+        radial-gradient(circle at 90% 100%, rgba(132,147,75,.16), transparent 55%),
+        linear-gradient(180deg, rgba(10,14,10,.96), rgba(4,6,5,.98));
+      box-shadow:0 26px 80px rgba(0,0,0,.75);
+      backdrop-filter: blur(16px);
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      transform:translateY(10px);
+      animation: card-in 900ms ease-out forwards;
+    }
+    @keyframes card-in{
+      to{transform:translateY(0);}
+    }
+    .eyebrow{
+      color:var(--accent-2);
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-size:.74rem;
+      font-weight:800;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .eyebrow::before{
+      content:"";
+      height:1px; width:40px;
+      background:linear-gradient(90deg, transparent, var(--accent-2));
+    }
+    h1{
+      font-size:clamp(2.1rem, 4.4vw, 3.3rem);
+      line-height:.96;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+    .sub{
+      color:var(--muted);
+      font-size:.98rem;
+      line-height:1.7;
+    }
+    .pill-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:2px;
+    }
+    .pill{
+      border-radius:999px;
+      border:1px solid rgba(239,231,207,.22);
+      padding:6px 10px;
+      font-size:.76rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+    .cta-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:10px;
+      align-items:center;
+    }
+    button#enterBtn{
+      appearance:none;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:radial-gradient(circle at 50% 0, rgba(242,210,116,1) 0, rgba(242,210,116,.2) 36%, transparent 58%),
+                 linear-gradient(180deg, rgba(199,38,24,1), rgba(126,18,12,1));
+      color:#050605;
+      font-weight:800;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      padding:0 22px;
+      min-height:46px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      box-shadow:0 16px 40px rgba(0,0,0,.7);
+      font-size:.8rem;
+      position:relative;
+      overflow:hidden;
+    }
+    button#enterBtn span.icon{
+      width:9px; height:9px;
+      border-radius:999px;
+      background:radial-gradient(circle, #000 0, #000 35%, transparent 70%);
+      border:1px solid rgba(0,0,0,.7);
+      box-shadow:0 0 0 1px rgba(255,255,255,.16);
+    }
+    button#enterBtn:before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(120deg, rgba(255,255,255,.35), transparent 60%);
+      opacity:0;
+      transform:translateX(-40%);
+      transition:opacity .28s ease, transform .28s ease;
+    }
+    button#enterBtn:hover:before{
+      opacity:1;
+      transform:translateX(0);
+    }
+    button#enterBtn:active{
+      transform:translateY(1px);
+      box-shadow:0 10px 26px rgba(0,0,0,.7);
+    }
+    .hint{
+      color:var(--muted);
+      font-size:.8rem;
+    }
+    .hint b{
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-size:.72rem;
+      color:var(--accent-2);
+    }
+    .footer{
+      margin-top:8px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      color:rgba(169,162,138,.8);
+      font-size:.78rem;
+    }
+    .footer span:last-child{
+      text-align:right;
+    }
+    .stroke-eye{
+      position:absolute;
+      inset:-40%;
+      opacity:.2;
+      mix-blend-mode:screen;
+      pointer-events:none;
+    }
+    .stroke-eye svg{
+      width:100%; height:100%;
+      opacity:.7;
+      filter:blur(.4px);
+    }
+    .flash-overlay{
+      position:fixed;
+      inset:0;
+      background:#fefdf8;
+      pointer-events:none;
+      opacity:0;
+      z-index:6;
+    }
+    .flash-overlay.flash{
+      animation: flash 800ms ease-out forwards;
+    }
+    @keyframes flash{
+      0%{opacity:0;}
+      20%{opacity:1;}
+      45%{opacity:.1;}
+      70%{opacity:.7;}
+      100%{opacity:0;}
+    }
+    @media (max-width:600px){
+      .card{padding:22px 18px 18px;border-radius:22px;}
+      h1{font-size:1.9rem;}
+      .footer{flex-direction:column;align-items:flex-start;}
+    }
+  </style>
+</head>
+<body class="vignette">
+  <div class="stage">
+    <div class="fireflies" id="fireflies"></div>
+    <div class="flash-overlay" id="flashOverlay"></div>
+    <div class="card" id="gateCard">
+      <div class="stroke-eye">
+        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="eyeStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#f2d274" stop-opacity=".0"/>
+              <stop offset="40%" stop-color="#f2d274" stop-opacity=".7"/>
+              <stop offset="60%" stop-color="#c72618" stop-opacity=".8"/>
+              <stop offset="100%" stop-color="#f2d274" stop-opacity=".0"/>
+            </linearGradient>
+          </defs>
+          <path d="M10 60 Q 100 4 190 60 Q 100 116 10 60 Z"
+                fill="none" stroke="url(#eyeStroke)" stroke-width="3.2" />
+          <circle cx="100" cy="60" r="15" fill="none" stroke="#efe7cf" stroke-width="2.2" />
+          <circle cx="103" cy="56" r="5" fill="#c72618" />
+        </svg>
+      </div>
+      <div class="eyebrow">EchoVerse entry gate</div>
+      <h1>Every pond’s got its monster.</h1>
+      <p class="sub">
+        Slip past the warning signs and drop into the Hydrilla Gorilla blackwater world —
+        tracks, evidence, sticker packs, and field reports waiting under the surface.
+      </p>
+      <div class="pill-row">
+        <span class="pill">King of the Weeds intro</span>
+        <span class="pill">Firefly night swim</span>
+        <span class="pill">Enter the swamp</span>
+      </div>
+      <div class="cta-row">
+        <button id="enterBtn">
+          <span class="icon"></span>
+          <span>Enter the swamp</span>
+        </button>
+        <div class="hint"><b>Heads up</b> — audio will start on click.</div>
+      </div>
+      <div class="footer">
+        <span>Hydrilla Gorilla · EchoVerse</span>
+        <span>Sponsored by <code>AeroVista</code>.</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const firefliesRoot = document.getElementById("fireflies");
+      const F = 18;
+      const { innerWidth: w, innerHeight: h } = window;
+      for(let i=0;i<F;i++){
+        const f = document.createElement("div");
+        f.className = "firefly";
+        const dx = Math.random() * w;
+        const dy = h - Math.random() * (h * 0.7);
+        f.style.left = dx + "px";
+        f.style.top = dy + "px";
+        f.style.animationDelay = (Math.random()*8).toFixed(2) + "s";
+        f.style.animationDuration = (12 + Math.random()*6).toFixed(2) + "s";
+        firefliesRoot.appendChild(f);
+      }
+
+      const enterBtn = document.getElementById("enterBtn");
+      const flashOverlay = document.getElementById("flashOverlay");
+      let armed = false;
+
+      enterBtn.addEventListener("click", async () => {
+        if(armed) return;
+        armed = true;
+        const audio = new Audio("audio/king-of-the-weeds.mp3");
+        audio.volume = 0.9;
+
+        try{
+          await audio.play();
+        }catch(err){
+          // if autoplay fails for any reason, still proceed with transition
+        }
+
+        // lightning-flash style overlay
+        flashOverlay.classList.add("flash");
+
+        // slight delay so first hit lands before page swap
+        setTimeout(() => {
+          document.body.classList.add("fade-out");
+        }, 520);
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1250);
+      });
+    })();
+  </script>
+</body>
+</html>
+
