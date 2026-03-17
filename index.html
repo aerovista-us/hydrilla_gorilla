@@ -375,6 +375,10 @@
       visibility:hidden;
       pointer-events:none;
     }
+    /* After the card drops, keep only darkness + fireflies while site is usable */
+    .gate-root.gate-dim{
+      pointer-events:none;
+    }
     .gate-stage{
       position:absolute; inset:0;
       background:
@@ -581,6 +585,29 @@
       45%{opacity:.1;}
       70%{opacity:.7;}
       100%{opacity:0;}
+    }
+
+    /* Card drop on click */
+    @keyframes gate-card-drop {
+      0%{transform:translateY(0); opacity:1;}
+      40%{transform:translateY(40px); opacity:1;}
+      100%{transform:translateY(140vh); opacity:0;}
+    }
+    .gate-card.drop {
+      animation: gate-card-drop 900ms cubic-bezier(.18,.7,.3,1) forwards;
+    }
+
+    /* Lightning flicker of the background at the big hit (~11s) */
+    @keyframes gate-bg-flicker {
+      0%{filter:none;}
+      5%{filter:brightness(2.4) contrast(1.4);}
+      12%{filter:brightness(.6);}
+      20%{filter:brightness(1.8);}
+      35%{filter:brightness(1);}
+      100%{filter:brightness(1);}
+    }
+    .gate-stage.flicker {
+      animation: gate-bg-flicker 900ms ease-out forwards;
     }
 
     @media (max-width: 980px) {
@@ -883,7 +910,7 @@
   </section>
 
   <section id="music">
-    <audio id="hg-main-audio" preload="metadata"></audio>
+    <audio id="hg-main-audio" preload="auto"></audio>
     <div class="wrap">
       <div class="section-head">
         <div>
@@ -1070,6 +1097,14 @@
     return { src: li.getAttribute('data-src'), title: li.getAttribute('data-title') };
   });
 
+  // Prime first track so audio is already loading when the gate appears
+  if (tracks[0]) {
+    audio.src = tracks[0].src;
+    nowTitle.textContent = tracks[0].title;
+    setPlayingIndex(0);
+    audio.load();
+  }
+
   function setPlayingIndex(index) {
     items.forEach(function(li, i) { li.classList.toggle('playing', i === index); });
   }
@@ -1149,6 +1184,8 @@
   var enter = document.getElementById('gate-enter');
   var flash = document.getElementById('gate-flash');
   var firefliesRoot = document.getElementById('gate-fireflies');
+  var gateStage = document.querySelector('.gate-stage');
+  var gateCard = document.querySelector('.gate-card');
   if (!root || !enter || !firefliesRoot) return;
 
   // Fireflies
@@ -1168,6 +1205,8 @@
   }
 
   var armed = false;
+  var hitTimer = null;
+
   enter.addEventListener('click', function() {
     if (armed) return;
     armed = true;
@@ -1178,15 +1217,27 @@
       playBtn.click();
     }
 
-    // Lightning flash
-    if (flash) {
-      flash.classList.add('flash');
+    // Drop the gate card offscreen so user feels the click
+    if (gateCard) {
+      gateCard.classList.add('drop');
     }
 
-    // Fade out gate but leave site usable underneath
-    setTimeout(function() {
-      root.classList.add('gate-hide');
-    }, 900);
+    // Allow scrolling immediately; gate still darkens scene + fireflies run
+    root.classList.add('gate-dim');
+
+    // Schedule the big lightning hit & flicker around 11s into the track
+    hitTimer = setTimeout(function() {
+      if (flash) {
+        flash.classList.add('flash');
+      }
+      if (gateStage) {
+        gateStage.classList.add('flicker');
+      }
+      // After flicker, remove the dark overlay entirely so full site is visible
+      setTimeout(function() {
+        root.classList.add('gate-hide');
+      }, 1100);
+    }, 11000);
   });
 })();
   </script>
