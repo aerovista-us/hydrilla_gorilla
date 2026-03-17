@@ -3,33 +3,380 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hydrilla Gorilla | Enter the Swamp</title>
+  <title>EchoVerse | Hydrilla Gorilla</title>
   <link rel="icon" type="image/x-icon" href="favicons/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png" />
+  <link rel="manifest" href="favicons/site.webmanifest" />
   <style>
-    :root{
+    :root {
+      --bg:#070807;
+      --panel:#0f130f;
+      --panel-2:#141a15;
       --ink:#efe7cf;
       --muted:#a9a28a;
+      --moss:#667a42;
+      --slime:#84934b;
       --accent:#c72618;
       --accent-2:#f2d274;
-      --bg:#020303;
-      --line:rgba(239,231,207,.18);
+      --line:rgba(239,231,207,.12);
+      --shadow:0 18px 50px rgba(0,0,0,.45);
+      --radius:22px;
+      --max:1240px;
     }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%;width:100%}
-    body{
-      font-family:Inter,system-ui,Arial,sans-serif;
-      background:#000;
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0;
+      font-family: Inter, system-ui, Arial, sans-serif;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(132,147,75,.12), transparent 26%),
+        radial-gradient(circle at 80% 15%, rgba(199,38,24,.10), transparent 18%),
+        linear-gradient(180deg, #0a0b0a 0%, #060706 100%);
       color:var(--ink);
-      overflow:hidden;
-      position:relative;
-      transition:opacity .6s ease-out, transform .6s ease-out;
+      overflow-x:hidden;
     }
-    body.fade-out{
-      opacity:0;
-      transform:scale(1.02);
-    }
-    .stage{
+    body::before {
+      content:"";
       position:fixed; inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(rgba(255,255,255,.02), rgba(255,255,255,0)),
+        repeating-linear-gradient(90deg, transparent 0 44px, rgba(255,255,255,.012) 44px 45px);
+      mix-blend-mode:screen;
+      opacity:.3;
+    }
+    a { color:inherit; text-decoration:none; }
+    .wrap { width:min(calc(100% - 32px), var(--max)); margin:0 auto; }
+    .nav {
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(12px);
+      background:rgba(5,7,5,.72);
+      border-bottom:1px solid var(--line);
+    }
+    .nav-inner {
+      display:flex; align-items:center; justify-content:space-between;
+      gap:18px; padding:14px 0;
+    }
+    .brand {
+      display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+    }
+    .brand-mark {
+      width:38px; height:38px; border-radius:12px;
+      background:
+        radial-gradient(circle at 50% 44%, rgba(199,38,24,.9) 0 18%, rgba(199,38,24,0) 20%),
+        linear-gradient(180deg, #1b2117, #0c0f0c);
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04), 0 8px 18px rgba(0,0,0,.3);
+      position:relative;
+    }
+    .brand-mark::after {
+      content:"";
+      position:absolute; inset:6px;
+      border:1px solid rgba(239,231,207,.08);
+      border-radius:10px;
+    }
+    .brand-mark img {
+      width:100%; height:100%; object-fit:contain; border-radius:12px; display:block;
+    }
+    .nav-links { display:flex; flex-wrap:wrap; gap:10px; }
+    .nav-links a {
+      color:var(--muted); font-size:.92rem; padding:10px 12px; border-radius:999px;
+      border:1px solid transparent;
+    }
+    .nav-links a:hover { color:var(--ink); border-color:var(--line); background:rgba(255,255,255,.03); }
+    .hero { position:relative; padding:68px 0 34px; }
+    .hero-grid { display:grid; grid-template-columns: 1.1fr .9fr; gap:28px; align-items:center; }
+    .eyebrow {
+      display:inline-flex; align-items:center; gap:10px;
+      color:var(--accent-2); text-transform:uppercase; letter-spacing:.16em; font-size:.78rem; font-weight:800;
+      margin-bottom:16px;
+    }
+    .eyebrow::before { content:""; width:34px; height:1px; background:linear-gradient(90deg, transparent, var(--accent-2)); }
+    h1 {
+      margin:0;
+      font-size: clamp(2.7rem, 7vw, 6rem);
+      line-height:.92; text-transform:uppercase; letter-spacing:.02em;
+      text-wrap:balance;
+    }
+    .hero p.lead { color:var(--muted); font-size:1.08rem; line-height:1.7; max-width:62ch; margin:18px 0 0; }
+    .cta-row { display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      min-height:48px; padding:0 18px; border-radius:999px; border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      font-weight:700;
+    }
+    .btn.primary { background:linear-gradient(180deg, rgba(199,38,24,.96), rgba(126,18,12,.95)); border-color:rgba(255,255,255,.06); }
+    .hero-card {
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:16px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-card img { width:100%; display:block; border-radius:20px; background:#0c0f0d; }
+    .badge {
+      position:absolute; left:24px; bottom:24px;
+      background:rgba(7,8,7,.76); border:1px solid var(--line);
+      padding:12px 14px; border-radius:16px; backdrop-filter: blur(8px);
+      max-width: 72%;
+    }
+    .badge b { display:block; text-transform:uppercase; letter-spacing:.12em; font-size:.72rem; color:var(--accent-2); margin-bottom:6px; }
+    .badge span { color:var(--muted); font-size:.92rem; }
+    section { padding:26px 0; }
+    .panel {
+      background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.015));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .section-head {
+      display:flex; flex-wrap:wrap; align-items:end; justify-content:space-between; gap:16px;
+      margin-bottom:16px;
+    }
+    h2 { margin:0; font-size:clamp(1.6rem, 4.5vw, 2.5rem); text-transform:uppercase; letter-spacing:.04em; }
+    .sub { color:var(--muted); max-width:62ch; line-height:1.65; }
+    .story { padding:22px; display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .story p { margin:0; line-height:1.78; color:#ddd7c5; }
+    .quote {
+      margin-top:16px; padding:16px 18px; border-left:3px solid var(--accent);
+      background:rgba(255,255,255,.02); border-radius:0 16px 16px 0; color:var(--accent-2);
+      font-weight:700; letter-spacing:.02em;
+    }
+    .comic-grid { display:grid; grid-template-columns: repeat(12, 1fr); gap:16px; }
+    .panel-card {
+      position:relative; overflow:hidden; min-height:240px; padding:16px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)),
+        radial-gradient(circle at 50% 15%, rgba(132,147,75,.12), transparent 32%);
+      border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow);
+    }
+    .panel-card.large { grid-column: span 7; min-height:340px; }
+    .panel-card.tall { grid-column: span 5; min-height:340px; }
+    .panel-card.medium { grid-column: span 4; }
+    .panel-card img {
+      position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.34;
+      filter: saturate(.8) contrast(1.06);
+    }
+    .panel-overlay {
+      position:absolute; inset:0;
+      background:
+        linear-gradient(180deg, rgba(5,7,5,.08), rgba(5,7,5,.75)),
+        linear-gradient(135deg, transparent 0 60%, rgba(199,38,24,.08) 100%);
+    }
+    .panel-copy { position:relative; z-index:2; display:flex; flex-direction:column; justify-content:end; height:100%; }
+    .panel-num {
+      display:inline-flex; align-items:center; justify-content:center;
+      width:42px; height:42px; border-radius:50%;
+      background:rgba(7,8,7,.78); border:1px solid var(--line); font-weight:800; color:var(--accent-2);
+      margin-bottom:auto;
+    }
+    .panel-copy h3 { margin:0 0 10px; text-transform:uppercase; letter-spacing:.06em; font-size:1.2rem; }
+    .panel-copy p { margin:0; color:var(--muted); line-height:1.6; }
+    .media-grid { display:grid; grid-template-columns: 1.2fr .8fr; gap:18px; }
+    .video-shell, .music-shell { padding:18px; }
+    .video-stage {
+      aspect-ratio:16/9; border-radius:20px; border:1px solid var(--line);
+      background:
+        radial-gradient(circle at 50% 40%, rgba(199,38,24,.18), transparent 20%),
+        linear-gradient(180deg, #111612, #090b09);
+      position:relative; overflow:hidden;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .video-stage video {
+      position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:20px;
+    }
+    .video-play-overlay {
+      position:absolute; z-index:2; cursor:pointer;
+    }
+    .video-stage.playing .video-play-overlay { opacity:0; pointer-events:none; transition:opacity .25s ease; }
+    .shorts-row { margin-top:18px; padding-top:16px; border-top:1px solid var(--line); }
+    .shorts-title { margin:0 0 10px; font-size:1rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
+    .shorts-list { list-style:none; margin:0; padding:0; }
+    .shorts-list li { margin-bottom:8px; color:var(--muted); font-size:.95rem; }
+    .shorts-list .pill { margin-right:8px; }
+    .video-stage::before {
+      content:""; position:absolute; inset:0;
+      background:
+        linear-gradient(transparent 0 58%, rgba(255,255,255,.03) 58% 59%, transparent 59% 100%),
+        repeating-linear-gradient(90deg, transparent 0 74px, rgba(255,255,255,.015) 74px 75px);
+      opacity:.35;
+    }
+    .play {
+      width:88px; height:88px; border-radius:50%;
+      background:rgba(7,8,7,.84); border:1px solid rgba(255,255,255,.11);
+      box-shadow:0 10px 28px rgba(0,0,0,.4);
+      display:grid; place-items:center; position:relative; z-index:2;
+    }
+    .play::after {
+      content:""; margin-left:6px;
+      border-left:24px solid var(--ink);
+      border-top:14px solid transparent; border-bottom:14px solid transparent;
+    }
+    .slot-note { margin-top:12px; color:var(--muted); font-size:.95rem; line-height:1.65; }
+    .track-card {
+      border:1px solid var(--line); border-radius:20px; padding:16px; background:rgba(255,255,255,.02);
+      margin-bottom:12px;
+    }
+    .track-top { display:flex; justify-content:space-between; gap:10px; align-items:center; }
+    .track-top b { text-transform:uppercase; letter-spacing:.06em; }
+    .pill {
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:.8rem; color:var(--accent-2); padding:8px 10px; border-radius:999px;
+      border:1px solid var(--line); background:rgba(255,255,255,.02);
+    }
+    audio { width:100%; margin-top:14px; filter: sepia(.35) hue-rotate(-8deg) saturate(.85); }
+    #hg-main-audio { position:absolute; left:-9999px; }
+    .hg-player {
+      background:linear-gradient(180deg, rgba(15,19,15,.98), rgba(10,12,10,.98));
+      border:1px solid var(--line); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow);
+      margin-bottom:18px;
+    }
+    .hg-player-now { font-size:.8rem; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-bottom:6px; }
+    .hg-player-now span { color:var(--accent-2); font-weight:700; }
+    .hg-player-controls { display:flex; align-items:center; gap:14px; margin-bottom:12px; }
+    .hg-player-btn {
+      width:48px; height:48px; border-radius:50%; border:1px solid var(--line);
+      background:linear-gradient(180deg, var(--slime), var(--moss)); color:var(--bg);
+      box-shadow:0 4px 14px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.15);
+      display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;
+      transition:transform .15s ease, box-shadow .15s ease;
+    }
+    .hg-player-btn:hover { transform:scale(1.05); box-shadow:0 6px 20px rgba(102,122,66,.4); }
+    .hg-player-btn:active { transform:scale(.98); }
+    .hg-player-btn.pause .icon-play { display:none; }
+    .hg-player-btn.pause .icon-pause { display:block; }
+    .hg-player-btn .icon-pause { display:none; }
+    .hg-player-btn .icon-play { display:block; }
+    .hg-player-btn svg { width:20px; height:20px; }
+    .hg-player-progress-wrap { flex:1; position:relative; height:8px; background:rgba(255,255,255,.06); border-radius:999px; cursor:pointer; overflow:hidden; }
+    .hg-player-progress { height:100%; width:0%; background:linear-gradient(90deg, var(--moss), var(--slime)); border-radius:999px; transition:width .1s linear; }
+    .hg-player-time { display:flex; justify-content:space-between; font-size:.75rem; color:var(--muted); margin-top:6px; }
+    .hg-player-playlist { list-style:none; margin:0; padding:0; border-top:1px solid var(--line); margin-top:14px; padding-top:14px; }
+    .hg-player-playlist li {
+      display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:14px; cursor:pointer;
+      border:1px solid transparent; color:var(--muted); transition:background .15s, color .15s, border-color .15s;
+    }
+    .hg-player-playlist li:hover { background:rgba(255,255,255,.04); color:var(--ink); }
+    .hg-player-playlist li.playing { background:rgba(132,147,75,.12); border-color:var(--line); color:var(--accent-2); }
+    .hg-player-playlist li .pl-num { width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,.06); border:1px solid var(--line); font-size:.7rem; font-weight:800; color:var(--muted); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .hg-player-playlist li.playing .pl-num { background:var(--moss); color:var(--bg); border-color:var(--slime); }
+    .hg-player-playlist li .pl-title { flex:1; font-size:.9rem; }
+    .track-play-btn {
+      width:44px; height:44px; border-radius:50%; border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      color:var(--accent-2); display:flex; align-items:center; justify-content:center; cursor:pointer;
+      transition:transform .12s ease, background .12s ease, color .12s ease;
+    }
+    .track-play-btn:hover { background:rgba(132,147,75,.2); color:var(--ink); transform:scale(1.06); }
+    .track-play-btn svg { width:18px; height:18px; }
+    .gallery { display:grid; grid-template-columns: repeat(4, 1fr); gap:16px; }
+    .gallery .item {
+      overflow:hidden; border-radius:22px; border:1px solid var(--line); background:var(--panel);
+      box-shadow:var(--shadow);
+    }
+    .gallery img { display:block; width:100%; height:100%; object-fit:cover; }
+    .lore-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; }
+    .lore-grid .item { overflow:hidden; border-radius:22px; border:1px solid var(--line); background:var(--panel); box-shadow:var(--shadow); }
+    .lore-grid img { display:block; width:100%; height:100%; object-fit:cover; }
+    .caption { padding:14px 14px 16px; color:var(--muted); line-height:1.55; }
+    .drop { padding:20px; }
+    .drop-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:14px; }
+    .mini {
+      border:1px solid var(--line); border-radius:18px; padding:16px;
+      background:rgba(255,255,255,.02);
+    }
+    .mini-thumb {
+      width:100%; border-radius:14px; margin-bottom:10px;
+      border:1px solid rgba(239,231,207,.16); background:#090c09; object-fit:cover; display:block;
+    }
+    .mini h4 { margin:0 0 8px; text-transform:uppercase; letter-spacing:.05em; font-size:1rem; }
+    .mini p { margin:0; color:var(--muted); line-height:1.55; font-size:.95rem; }
+    .apparel-hero {
+      margin:0 0 18px;
+      border-radius:20px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:#050706;
+      box-shadow:var(--shadow);
+    }
+    .apparel-hero img {
+      display:block;
+      width:100%;
+      height:auto;
+      object-fit:cover;
+    }
+    .apparel-hero .caption {
+      padding:12px 16px 14px;
+      font-size:.92rem;
+    }
+    .comic-extra {
+      margin-top:18px;
+    }
+    .comic-extra summary {
+      cursor:pointer;
+      list-style:none;
+      outline:none;
+      font-size:.9rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .comic-extra summary::marker { display:none; }
+    .comic-extra summary::-webkit-details-marker { display:none; }
+    .comic-extra summary span.dot {
+      width:8px; height:8px; border-radius:50%;
+      background:var(--accent-2);
+    }
+    .comic-extra-inner {
+      margin-top:12px;
+      padding:14px 16px 6px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      box-shadow:var(--shadow);
+    }
+    .comic-extra-panel {
+      margin-bottom:10px;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid rgba(239,231,207,.16);
+      background:#050706;
+    }
+    .comic-extra-panel img {
+      display:block;
+      width:100%;
+      height:auto;
+      object-fit:cover;
+    }
+    .footer { padding:38px 0 60px; color:var(--muted); }
+    .footer .panel {
+      padding:20px;
+      display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px;
+    }
+
+    /* Entry gate overlay (merged from former landing page) */
+    .gate-root{
+      position:fixed; inset:0;
+      z-index:120;
+      pointer-events:auto;
+      transition:opacity .7s ease-out, visibility .7s ease-out;
+    }
+    .gate-root.gate-hide{
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+    }
+    .gate-stage{
+      position:absolute; inset:0;
       background:
         radial-gradient(circle at 50% -20%, rgba(132,147,75,.16), transparent 55%),
         radial-gradient(circle at 10% 80%, rgba(199,38,24,.18), transparent 52%),
@@ -39,7 +386,7 @@
       justify-content:center;
       padding:24px;
     }
-    .vignette::before{
+    .gate-stage::before{
       content:"";
       position:fixed; inset:0;
       pointer-events:none;
@@ -49,41 +396,41 @@
         radial-gradient(circle at 100% 100%, transparent 0, rgba(0,0,0,.75) 72%);
       mix-blend-mode:multiply;
     }
-    .fireflies{
+    .gate-fireflies{
       position:fixed; inset:0;
       overflow:hidden;
       pointer-events:none;
       z-index:2;
     }
-    .firefly{
+    .gate-firefly{
       position:absolute;
       width:4px; height:4px;
       border-radius:50%;
       background:radial-gradient(circle, rgba(242,210,116,1) 0, rgba(242,210,116,.6) 40%, transparent 70%);
       opacity:0;
-      animation: drift 14s linear infinite, glow 3.4s ease-in-out infinite;
+      animation: gate-drift 14s linear infinite, gate-glow 3.4s ease-in-out infinite;
       filter:blur(.2px);
     }
-    @keyframes drift{
+    @keyframes gate-drift{
       0%{transform:translate3d(0,0,0) scale(.7);}
       25%{transform:translate3d(40px,-60px,0) scale(1);}
       50%{transform:translate3d(-30px,-120px,0) scale(.9);}
       75%{transform:translate3d(20px,-180px,0) scale(1.05);}
       100%{transform:translate3d(-20px,-260px,0) scale(.8);}
     }
-    @keyframes glow{
+    @keyframes gate-glow{
       0%,100%{opacity:0;}
       15%{opacity:.9;}
       35%{opacity:.2;}
       55%{opacity:.8;}
       80%{opacity:.3;}
     }
-    .card{
+    .gate-card{
       position:relative;
       z-index:3;
       max-width:520px;
       width:100%;
-      padding:28px 24px 24px;
+      padding:28px 24px 22px;
       border-radius:26px;
       border:1px solid var(--line);
       background:
@@ -96,12 +443,12 @@
       flex-direction:column;
       gap:16px;
       transform:translateY(10px);
-      animation: card-in 900ms ease-out forwards;
+      animation: gate-card-in 900ms ease-out forwards;
     }
-    @keyframes card-in{
+    @keyframes gate-card-in{
       to{transform:translateY(0);}
     }
-    .eyebrow{
+    .gate-eyebrow{
       color:var(--accent-2);
       text-transform:uppercase;
       letter-spacing:.16em;
@@ -111,45 +458,37 @@
       align-items:center;
       gap:10px;
     }
-    .eyebrow::before{
+    .gate-eyebrow::before{
       content:"";
       height:1px; width:40px;
       background:linear-gradient(90deg, transparent, var(--accent-2));
     }
-    h1{
+    .gate-title{
       font-size:clamp(2.1rem, 4.4vw, 3.3rem);
       line-height:.96;
       text-transform:uppercase;
       letter-spacing:.04em;
+      margin:0;
     }
-    .sub{
+    .gate-sub{
       color:var(--muted);
       font-size:.98rem;
       line-height:1.7;
     }
-    .pill-row{
+    .gate-pill-row{
       display:flex;
       flex-wrap:wrap;
       gap:8px;
       margin-top:2px;
     }
-    .pill{
-      border-radius:999px;
-      border:1px solid rgba(239,231,207,.22);
-      padding:6px 10px;
-      font-size:.76rem;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:var(--muted);
-    }
-    .cta-row{
+    .gate-cta-row{
       display:flex;
       flex-wrap:wrap;
       gap:10px;
       margin-top:10px;
       align-items:center;
     }
-    button#enterBtn{
+    .gate-enter-btn{
       appearance:none;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
@@ -170,14 +509,14 @@
       position:relative;
       overflow:hidden;
     }
-    button#enterBtn span.icon{
+    .gate-enter-btn span.gate-dot{
       width:9px; height:9px;
       border-radius:999px;
       background:radial-gradient(circle, #000 0, #000 35%, transparent 70%);
       border:1px solid rgba(0,0,0,.7);
       box-shadow:0 0 0 1px rgba(255,255,255,.16);
     }
-    button#enterBtn:before{
+    .gate-enter-btn:before{
       content:"";
       position:absolute;
       inset:0;
@@ -186,25 +525,25 @@
       transform:translateX(-40%);
       transition:opacity .28s ease, transform .28s ease;
     }
-    button#enterBtn:hover:before{
+    .gate-enter-btn:hover:before{
       opacity:1;
       transform:translateX(0);
     }
-    button#enterBtn:active{
+    .gate-enter-btn:active{
       transform:translateY(1px);
       box-shadow:0 10px 26px rgba(0,0,0,.7);
     }
-    .hint{
+    .gate-hint{
       color:var(--muted);
       font-size:.8rem;
     }
-    .hint b{
+    .gate-hint b{
       text-transform:uppercase;
       letter-spacing:.16em;
       font-size:.72rem;
       color:var(--accent-2);
     }
-    .footer{
+    .gate-footer{
       margin-top:8px;
       display:flex;
       justify-content:space-between;
@@ -212,22 +551,20 @@
       color:rgba(169,162,138,.8);
       font-size:.78rem;
     }
-    .footer span:last-child{
-      text-align:right;
-    }
-    .stroke-eye{
+    .gate-footer span:last-child{text-align:right;}
+    .gate-eye{
       position:absolute;
       inset:-40%;
       opacity:.2;
       mix-blend-mode:screen;
       pointer-events:none;
     }
-    .stroke-eye svg{
+    .gate-eye svg{
       width:100%; height:100%;
       opacity:.7;
       filter:blur(.4px);
     }
-    .flash-overlay{
+    .gate-flash{
       position:fixed;
       inset:0;
       background:#fefdf8;
@@ -235,122 +572,623 @@
       opacity:0;
       z-index:6;
     }
-    .flash-overlay.flash{
-      animation: flash 800ms ease-out forwards;
+    .gate-flash.flash{
+      animation: gate-flash 800ms ease-out forwards;
     }
-    @keyframes flash{
+    @keyframes gate-flash{
       0%{opacity:0;}
       20%{opacity:1;}
       45%{opacity:.1;}
       70%{opacity:.7;}
       100%{opacity:0;}
     }
-    @media (max-width:600px){
-      .card{padding:22px 18px 18px;border-radius:22px;}
-      h1{font-size:1.9rem;}
-      .footer{flex-direction:column;align-items:flex-start;}
+
+    @media (max-width: 980px) {
+      .hero-grid, .story, .media-grid, .gallery, .lore-grid, .drop-grid { grid-template-columns: 1fr; }
+      .comic-grid { grid-template-columns: 1fr; }
+      .panel-card.large, .panel-card.tall, .panel-card.medium { grid-column: span 1; min-height:280px; }
+      .nav-inner { align-items:flex-start; }
     }
   </style>
 </head>
-<body class="vignette">
-  <div class="stage">
-    <div class="fireflies" id="fireflies"></div>
-    <div class="flash-overlay" id="flashOverlay"></div>
-    <div class="card" id="gateCard">
-      <div class="stroke-eye">
-        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="eyeStroke" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#f2d274" stop-opacity=".0"/>
-              <stop offset="40%" stop-color="#f2d274" stop-opacity=".7"/>
-              <stop offset="60%" stop-color="#c72618" stop-opacity=".8"/>
-              <stop offset="100%" stop-color="#f2d274" stop-opacity=".0"/>
-            </linearGradient>
-          </defs>
-          <path d="M10 60 Q 100 4 190 60 Q 100 116 10 60 Z"
-                fill="none" stroke="url(#eyeStroke)" stroke-width="3.2" />
-          <circle cx="100" cy="60" r="15" fill="none" stroke="#efe7cf" stroke-width="2.2" />
-          <circle cx="103" cy="56" r="5" fill="#c72618" />
-        </svg>
-      </div>
-      <div class="eyebrow">EchoVerse entry gate</div>
-      <h1>Every pond’s got its monster.</h1>
-      <p class="sub">
-        Slip past the warning signs and drop into the Hydrilla Gorilla blackwater world —
-        tracks, evidence, sticker packs, and field reports waiting under the surface.
-      </p>
-      <div class="pill-row">
-        <span class="pill">King of the Weeds intro</span>
-        <span class="pill">Firefly night swim</span>
-        <span class="pill">Enter the swamp</span>
-      </div>
-      <div class="cta-row">
-        <button id="enterBtn">
-          <span class="icon"></span>
-          <span>Enter the swamp</span>
-        </button>
-        <div class="hint"><b>Heads up</b> — audio will start on click.</div>
-      </div>
-      <div class="footer">
-        <span>Hydrilla Gorilla · EchoVerse</span>
-        <span>Sponsored by <code>AeroVista</code>.</span>
+<body>
+  <!-- Entry gate overlay -->
+  <div class="gate-root" id="gate-root">
+    <div class="gate-stage">
+      <div class="gate-fireflies" id="gate-fireflies"></div>
+      <div class="gate-flash" id="gate-flash"></div>
+      <div class="gate-card">
+        <div class="gate-eye">
+          <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="gateEyeStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#f2d274" stop-opacity=".0"/>
+                <stop offset="40%" stop-color="#f2d274" stop-opacity=".7"/>
+                <stop offset="60%" stop-color="#c72618" stop-opacity=".8"/>
+                <stop offset="100%" stop-color="#f2d274" stop-opacity=".0"/>
+              </linearGradient>
+            </defs>
+            <path d="M10 60 Q 100 4 190 60 Q 100 116 10 60 Z"
+                  fill="none" stroke="url(#gateEyeStroke)" stroke-width="3.2" />
+            <circle cx="100" cy="60" r="15" fill="none" stroke="#efe7cf" stroke-width="2.2" />
+            <circle cx="103" cy="56" r="5" fill="#c72618" />
+          </svg>
+        </div>
+        <div class="gate-eyebrow">EchoVerse entry gate</div>
+        <h1 class="gate-title">Every pond’s got its monster.</h1>
+        <p class="gate-sub">
+          Slip past the warning signs and drop into the Hydrilla Gorilla blackwater world —
+          tracks, evidence, sticker packs, and field reports waiting under the surface.
+        </p>
+        <div class="gate-pill-row">
+          <span class="pill">King of the Weeds intro</span>
+          <span class="pill">Firefly night swim</span>
+          <span class="pill">Enter the swamp</span>
+        </div>
+        <div class="gate-cta-row">
+          <button class="gate-enter-btn" id="gate-enter">
+            <span class="gate-dot"></span>
+            <span>Enter the swamp</span>
+          </button>
+          <div class="gate-hint"><b>Heads up</b> — music will start on click.</div>
+        </div>
+        <div class="gate-footer">
+          <span>Hydrilla Gorilla · EchoVerse</span>
+          <span>Gate synced with main music player.</span>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Hidden gate audio, preloaded so click reliably starts playback -->
-  <audio id="gateAudio" src="audio/king-of-the-weeds.mp3" preload="auto"></audio>
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <div class="brand">
+        <div class="brand-mark"><img src="images/hg-logo.png" alt="Hydrilla Gorilla" /></div>
+        <div>
+          <div>EchoVerse | Hydrilla Gorilla</div>
+          <div style="font-size:.72rem; color:var(--muted); font-weight:600;">Sponsored by AeroVista</div>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="#story">Story</a>
+        <a href="#lore">Lore</a>
+        <a href="#comic">Comic</a>
+        <a href="#video">Video</a>
+        <a href="#music">Music</a>
+        <a href="#gallery">Stickers</a>
+        <a href="#drop">Apparel</a>
+      </div>
+    </div>
+  </nav>
 
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">EchoStory Release World</div>
+        <h1>Hydrilla Gorilla</h1>
+        <p class="lead">
+          A swamp legend rendered as one cohesive release page — part music launch, part comic-book myth, part merch drop, part media hub.
+          Rain, hooks, broken lines, red eyes under lily pads, and one hard rule: don’t wake the king.
+        </p>
+        <div class="cta-row">
+          <a class="btn primary" href="#music">Listen Now</a>
+          <a class="btn" href="#comic">Read the Comic</a>
+          <a class="btn" href="#drop">View the Drop</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <img src="images/hg-swampthing.png" alt="Hydrilla Gorilla hero emblem" />
+        <div class="badge">
+          <b>Featured single</b>
+          <span>King of the Weeds — dark swamp-hop single from the Hydrilla Gorilla EchoStory arc.</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="story">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>The Story Spine</h2>
+          <div class="sub">A cohesive landing-page narrative designed to hold visuals, music, comic panels, video trailers, and product drops in one haunted release environment.</div>
+        </div>
+      </div>
+      <div class="panel story">
+        <div>
+          <p>
+            The rain started before sunset and never really stopped. Not the pounding kind — the whispering kind. The kind that makes a pond feel awake.
+            At the edge of the water sat an old dock, warped and tired, where every warning about this side of the swamp had once been told.
+            Old men called it bad luck. Younger ones called it bait. Everybody called it something different, until one name stuck hard enough to live on its own.
+          </p>
+          <div class="quote">Every pond’s got its monster. This one had a crown.</div>
+        </div>
+        <div>
+          <p>
+            Hydrilla Gorilla is the thing beneath the pads — a myth grown from broken rods, vanished bait, and stories that got larger every time somebody swore they almost had it.
+            This page treats the legend like a full release ecosystem: the song is the signal, the comic is the witness, the stickers are the field evidence, and the apparel is what gets worn by the ones reckless enough to cast after dark.
+          </p>
+          <div class="quote">Some hear a warning and go home. Some hear a legend and start sharpening hooks.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="lore">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Lore & Evidence</h2>
+          <div class="sub">Timeline, witness board, and Blackwater Depths — the legend as case file.</div>
+        </div>
+      </div>
+      <div class="lore-grid">
+        <figure class="item">
+          <img src="images/legend-timeline.png" alt="Hydrilla Gorilla Swamp Legend Timeline — Snapped Pole, Red-Eye Report, Bait String Gone, Breach Night" />
+          <figcaption class="caption">Swamp Legend Timeline. 2003 Snapped Pole → 2007 Red-Eye Report → 2011 Bait String Gone → 2018 Breach Night.</figcaption>
+        </figure>
+        <figure class="item">
+          <img src="images/witness-board.png" alt="Witness board — Blackwater Depths map, Breach Night notes, red-eye photos" />
+          <figcaption class="caption">Witness board. BLACKWATER DEPTHS map, Breach Night, drag logs, and the first red-eye sighting.</figcaption>
+        </figure>
+        <figure class="item">
+          <img src="images/swamp-map.png" alt="Hydrilla Gorilla Backwater Depths map — Old Dock, Weed Crown Basin, Red Eye Channel" />
+          <figcaption class="caption">Backwater Depths. Old Dock, Weed Crown Basin, Broken Launch, Snag Flats, Red Eye Channel, no-cast pocket.</figcaption>
+        </figure>
+        <figure class="item">
+          <img src="images/patch-set.png" alt="Hydrilla Gorilla patch set — HG logo, crowned eye, warning badge, hook insignia" />
+          <figcaption class="caption">Patch set evidence. HG monogram, crowned eye, warning badge, and hook sigil captured as embroidered field marks.</figcaption>
+        </figure>
+        <figure class="item">
+          <img src="images/bait-shop-flyer.png" alt="After-dark casts discouraged — Hydrilla Zone warning poster" />
+          <figcaption class="caption">Bait-shop flyer. AFTER-DARK CASTS DISCOURAGED — recovered warning sheet turned case-file artifact.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="comic">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Comic Book Sequence</h2>
+          <div class="sub">Structured like a launch comic: setup, hunt, contact, and aftermath. These panels can later be swapped for final illustrated frames or motion-comic stills.</div>
+        </div>
+      </div>
+      <div class="comic-grid">
+        <article class="panel-card large">
+          <img src="images/comic-rumor-dock.png" alt="" />
+          <div class="panel-overlay"></div>
+          <div class="panel-copy">
+            <div class="panel-num">01</div>
+            <h3>Rumor on the Dock</h3>
+            <p>Rain, old boards, coffee cups, bent rods, and a rule every local knows: do not fish that hydrilla after dark.</p>
+          </div>
+        </article>
+
+        <article class="panel-card tall">
+          <img src="images/comic-red-eye.png" alt="" />
+          <div class="panel-overlay"></div>
+          <div class="panel-copy">
+            <div class="panel-num">02</div>
+            <h3>Red Eye in the Pads</h3>
+            <p>Lightning opens the water for half a heartbeat. Something large is already looking back.</p>
+          </div>
+        </article>
+
+        <article class="panel-card medium">
+          <img src="images/comic-sharpening-hooks.png" alt="" />
+          <div class="panel-overlay"></div>
+          <div class="panel-copy">
+            <div class="panel-num">03</div>
+            <h3>Sharpening Hooks</h3>
+            <p>The warning stops being caution and turns into invitation. Somebody chooses the hunt.</p>
+          </div>
+        </article>
+
+        <article class="panel-card medium">
+          <img src="images/comic-blackwater.png" alt="" />
+          <div class="panel-overlay"></div>
+          <div class="panel-copy">
+            <div class="panel-num">04</div>
+            <h3>Blackwater Breach</h3>
+            <p>The line goes alive. Drag screams. The legend stops being a story and starts pulling back.</p>
+          </div>
+        </article>
+
+        <article class="panel-card medium">
+          <img src="images/comic-swamp-score.png" alt="" />
+          <div class="panel-overlay"></div>
+          <div class="panel-copy">
+            <div class="panel-num">05</div>
+            <h3>The Swamp Keeps Score</h3>
+            <p>By dawn, there is no clean victory. Only proof that the swamp still chooses what gets remembered.</p>
+          </div>
+        </article>
+      </div>
+      <details class="comic-extra">
+        <summary><span class="dot"></span> Season 00 · Ep. 01 — Every Pond’s Got Its Monster (cells 1–5)</summary>
+        <div class="comic-extra-inner">
+          <div class="comic-extra-panel">
+            <img src="images/s00ep01cell1.png" alt="Season 00 Episode 1, Cell 1 — Hydrilla Gorilla dock scene, BAIT BEER LIES sign, rain and red eyes on the water." />
+          </div>
+          <div class="comic-extra-panel">
+            <img src="images/s00ep01cell2.png" alt="Season 00 Episode 1, Cell 2 — empty dock at night, lantern over blackwater and rain rings." />
+          </div>
+          <div class="comic-extra-panel">
+            <img src="images/s00ep01cell3.png" alt="Season 00 Episode 1, Cell 3 — two locals at the dock table saying Every pond’s got its monster. This one’s got a name." />
+          </div>
+          <div class="comic-extra-panel">
+            <img src="images/s00ep01cell4.png" alt="Season 00 Episode 1, Cell 4 — shape moving under the pads; Folks called it bass at first. Bass don’t move like that." />
+          </div>
+          <div class="comic-extra-panel">
+            <img src="images/s00ep01cell5.png" alt="Season 00 Episode 1, Cell 5 — violent strike and splash; One man swore he hooked it once. Then the line just vanished." />
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="video">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Video + Trailer Zone</h2>
+          <div class="sub">Main demo below; shorts and comic flip + 2 videos per episode coming next.</div>
+        </div>
+      </div>
+      <div class="media-grid">
+        <div class="panel video-shell">
+          <div class="video-stage">
+            <video id="hg-main-video" src="video/demo.mp4" preload="metadata" controls playsinline poster="images/hg-swampthing.png"></video>
+            <button type="button" class="play video-play-overlay" id="hg-video-play-overlay" aria-label="Play video"></button>
+          </div>
+          <div class="slot-note">
+            Place “King of the Weeds” <code>demo.mp4</code> in the <code>video/</code> folder. Poster uses hero image when paused.
+          </div>
+          <div class="shorts-row">
+            <h3 class="shorts-title">Shorts / More (coming)</h3>
+            <ul class="shorts-list">
+              <li><span class="pill">Comic flip</span> Panel flip-through with captions</li>
+              <li><span class="pill">Short 1</span> Per-episode slot</li>
+              <li><span class="pill">Short 2</span> Per-episode slot</li>
+            </ul>
+            <p class="slot-note">Plan: comic flip + 2 videos per episode.</p>
+          </div>
+        </div>
+        <div class="panel video-shell">
+          <div class="track-card">
+            <div class="track-top">
+              <b>Suggested video stack</b>
+              <span class="pill">3 assets</span>
+            </div>
+            <div class="slot-note">
+              1) Main single visualizer<br/>
+              2) 30-second social trailer<br/>
+              3) Comic panel flip-through with captions
+            </div>
+          </div>
+          <div class="track-card">
+            <div class="track-top">
+              <b>Visual motif cues</b>
+              <span class="pill">Theme lock</span>
+            </div>
+            <div class="slot-note">
+              Rain scanlines, dock wood texture, hook silhouettes, swamp fog, red eye glints, lily-pad split wake, distressed caption cards.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="music">
+    <audio id="hg-main-audio" preload="metadata"></audio>
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Music Hub</h2>
+          <div class="sub">Use the player below for masters, previews, stems, or private review cuts. Pick a track from the playlist or hit play on any card.</div>
+        </div>
+      </div>
+      <div class="media-grid">
+        <div class="panel music-shell">
+          <div class="hg-player">
+            <div class="hg-player-now">Now playing <span id="hg-now-title">—</span></div>
+            <div class="hg-player-controls">
+              <button type="button" class="hg-player-btn" id="hg-play-pause" aria-label="Play / Pause">
+                <span class="icon-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                <span class="icon-pause"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></span>
+              </button>
+              <div class="hg-player-progress-wrap" id="hg-seek-wrap">
+                <div class="hg-player-progress" id="hg-progress"></div>
+              </div>
+            </div>
+            <div class="hg-player-time">
+              <span id="hg-time-current">0:00</span>
+              <span id="hg-time-total">0:00</span>
+            </div>
+            <ul class="hg-player-playlist" id="hg-playlist">
+              <li data-src="audio/king-of-the-weeds.mp3" data-title="King of the Weeds">
+                <span class="pl-num">1</span>
+                <span class="pl-title">King of the Weeds</span>
+              </li>
+              <li data-src="audio/king-of-the-weeds.mp3" data-title="Every Pond’s Got Its Monster">
+                <span class="pl-num">2</span>
+                <span class="pl-title">Every Pond’s Got Its Monster</span>
+              </li>
+              <li data-src="audio/king-of-the-weeds.mp3" data-title="Hunt Them Down">
+                <span class="pl-num">3</span>
+                <span class="pl-title">Hunt Them Down</span>
+              </li>
+              <li data-src="audio/king-of-the-weeds.mp3" data-title="Pull Me Down">
+                <span class="pl-num">4</span>
+                <span class="pl-title">Pull Me Down</span>
+              </li>
+              <li data-src="audio/king-of-the-weeds.mp3" data-title="The Swamp Always Knows">
+                <span class="pl-num">5</span>
+                <span class="pl-title">The Swamp Always Knows</span>
+              </li>
+            </ul>
+          </div>
+          <div class="track-card">
+            <div class="track-top">
+              <b>Featured single — King of the Weeds</b>
+              <span class="pill">Preview slot</span>
+            </div>
+            <button type="button" class="track-play-btn" data-track="0" aria-label="Play in main player">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <div class="slot-note">Plays in the main player above. Single-ready version.</div>
+          </div>
+          <div class="track-card">
+            <div class="track-top">
+              <b>EchoStory arc playlist</b>
+              <span class="pill">4-track arc</span>
+            </div>
+            <button type="button" class="track-play-btn" data-track="1" aria-label="Play in main player">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <div class="slot-note">Ideal sequence: Every Pond’s Got Its Monster → Hunt Them Down → Pull Me Down → The Swamp Always Knows.</div>
+          </div>
+        </div>
+
+        <div class="panel music-shell">
+          <div class="track-card">
+            <div class="track-top">
+              <b>Lyric hook</b>
+              <span class="pill">Single anchor</span>
+            </div>
+            <div class="slot-note">
+              “King of the weeds / King of the weeds / Red eyes low in the blackwater green…”
+            </div>
+          </div>
+          <div class="track-card">
+            <div class="track-top">
+              <b>Production feel</b>
+              <span class="pill">Sound direction</span>
+            </div>
+            <div class="slot-note">
+              Dark swamp-hop, deep 808s, haunted ambience, stomp rhythm, trailer-sized choruses, slow menace, replay-ready hook.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Field Evidence & Stickers</h2>
+          <div class="sub">Sticker sheets and bundle visuals from the Hydrilla Gorilla release — the stuff you’d peel off bait buckets, amp cases, and dock rails.</div>
+        </div>
+      </div>
+      <div class="gallery">
+        <figure class="item">
+          <img src="images/stickerpck-1.png" alt="Hydrilla Gorilla sticker collection" />
+          <figcaption class="caption">Pack 1 — EchoVerse field set: warnings, hooks, phrases, lure marks, and the first sightings.</figcaption>
+        </figure>
+        <figure class="item">
+          <img src="images/sticker-pack-1.png" alt="Sticker pack 1" />
+          <figcaption class="caption">Sticker pack 1.</figcaption>
+        </figure>
+        <figure class="item">
+          <img src="images/sticker-pack-2.png" alt="King of the Weeds sticker collection" />
+          <figcaption class="caption">Pack 2 — King of the Weeds: crown icons, red-eye motifs, breach energy, and dominance slogans.</figcaption>
+        </figure>
+        <figure class="item">
+          <img src="images/trading-card-series.png" alt="Hydrilla Gorilla trading card series — six panels" />
+          <figcaption class="caption">Trading card series — six-card spread that threads Rumor Dock, Red Eye sightings, Blackwater Breach, and aftermath into one collectible lane.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="drop">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Apparel Drop Blueprint</h2>
+          <div class="sub">Built as a merch-ready launch section so the world feels unified across clothing, music, comic, and visuals.</div>
+        </div>
+      </div>
+      <div class="panel drop">
+        <figure class="apparel-hero">
+          <img src="images/merch-line-showcase.png" alt="Hydrilla Gorilla merch line showcase — warning-sign, field report, monster-club, and minimal premium apparel lanes." />
+          <figcaption class="caption">Merch line showcase — warning-sign apparel, field report pieces, monster-club jackets, and minimal premium HG fits in one grid.</figcaption>
+        </figure>
+        <div class="drop-grid">
+          <article class="mini">
+            <h4>Warning-sign apparel</h4>
+            <p>Don’t Wake the King and AFTER DARK warnings as back-print tees and hoodies pulled straight from the merch grid above.</p>
+          </article>
+          <article class="mini">
+            <h4>Field report lane</h4>
+            <p>Evidence-log long sleeves and tees — coordinates, depth stats, snapped-line charts, and Blackwater micro-text.</p>
+          </article>
+          <article class="mini">
+            <h4>Monster-club pieces</h4>
+            <p>Varsity jackets, patches, and bold fronts for the ones who keep casting after dusk.</p>
+          </article>
+          <article class="mini">
+            <h4>Minimal premium line</h4>
+            <p>Tonal HG monograms, subtle crest hits, and washed blanks built to live past the campaign.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="panel">
+        <div>
+          <strong style="display:block; text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px;">EchoVerse powered by AV</strong>
+          <span>Hydrilla Gorilla release world — music, myth, motion, and merch in one themed environment.</span>
+        </div>
+        <div style="text-align:right;">
+          <div style="text-transform:uppercase; letter-spacing:.1em; color:var(--accent-2); font-size:.78rem;">Ready for next pass</div>
+          <div>Add final MP3s, embeds, comic art, and storefront links.</div>
+        </div>
+      </div>
+    </div>
+  </footer>
   <script>
-    (function(){
-      const firefliesRoot = document.getElementById("fireflies");
-      const F = 18;
-      const { innerWidth: w, innerHeight: h } = window;
-      for(let i=0;i<F;i++){
-        const f = document.createElement("div");
-        f.className = "firefly";
-        const dx = Math.random() * w;
-        const dy = h - Math.random() * (h * 0.7);
-        f.style.left = dx + "px";
-        f.style.top = dy + "px";
-        f.style.animationDelay = (Math.random()*8).toFixed(2) + "s";
-        f.style.animationDuration = (12 + Math.random()*6).toFixed(2) + "s";
-        firefliesRoot.appendChild(f);
-      }
+(function() {
+  var audio = document.getElementById('hg-main-audio');
+  var playPauseBtn = document.getElementById('hg-play-pause');
+  var progressBar = document.getElementById('hg-progress');
+  var seekWrap = document.getElementById('hg-seek-wrap');
+  var nowTitle = document.getElementById('hg-now-title');
+  var timeCurrent = document.getElementById('hg-time-current');
+  var timeTotal = document.getElementById('hg-time-total');
+  var playlist = document.getElementById('hg-playlist');
+  var items = playlist ? playlist.querySelectorAll('li') : [];
+  var tracks = Array.prototype.map.call(items, function(li) {
+    return { src: li.getAttribute('data-src'), title: li.getAttribute('data-title') };
+  });
 
-      const enterBtn = document.getElementById("enterBtn");
-      const flashOverlay = document.getElementById("flashOverlay");
-      const gateAudio = document.getElementById("gateAudio");
-      let armed = false;
+  function setPlayingIndex(index) {
+    items.forEach(function(li, i) { li.classList.toggle('playing', i === index); });
+  }
+  function playTrack(index) {
+    if (!tracks[index]) return;
+    var t = tracks[index];
+    audio.src = t.src;
+    nowTitle.textContent = t.title;
+    setPlayingIndex(index);
+    playPauseBtn.classList.add('pause');
+    audio.play();
+  }
+  function togglePlayPause() {
+    if (audio.paused) {
+      if (!audio.src) playTrack(0);
+      else audio.play();
+      playPauseBtn.classList.add('pause');
+    } else {
+      audio.pause();
+      playPauseBtn.classList.remove('pause');
+    }
+  }
+  function formatTime(s) {
+    if (!isFinite(s) || s < 0) return '0:00';
+    var m = Math.floor(s / 60);
+    var sec = Math.floor(s % 60);
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+  }
+  audio.addEventListener('play', function() { playPauseBtn.classList.add('pause'); });
+  audio.addEventListener('pause', function() { playPauseBtn.classList.remove('pause'); });
+  audio.addEventListener('timeupdate', function() {
+    var p = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+    progressBar.style.width = p + '%';
+    timeCurrent.textContent = formatTime(audio.currentTime);
+  });
+  audio.addEventListener('loadedmetadata', function() {
+    timeTotal.textContent = formatTime(audio.duration);
+  });
+  audio.addEventListener('durationchange', function() {
+    timeTotal.textContent = formatTime(audio.duration);
+  });
+  playPauseBtn.addEventListener('click', togglePlayPause);
+  seekWrap.addEventListener('click', function(e) {
+    if (!audio.duration) return;
+    var rect = seekWrap.getBoundingClientRect();
+    var x = (e.clientX - rect.left) / rect.width;
+    audio.currentTime = x * audio.duration;
+  });
+  items.forEach(function(li, index) {
+    li.addEventListener('click', function() { playTrack(index); });
+  });
+  document.querySelectorAll('.track-play-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var idx = parseInt(btn.getAttribute('data-track'), 10);
+      playTrack(idx);
+    });
+  });
 
-      enterBtn.addEventListener("click", async () => {
-        if(armed) return;
-        armed = true;
+  var mainVideo = document.getElementById('hg-main-video');
+  var videoOverlay = document.getElementById('hg-video-play-overlay');
+  var videoStage = mainVideo && mainVideo.closest('.video-stage');
+  if (mainVideo && videoOverlay && videoStage) {
+    videoOverlay.addEventListener('click', function() {
+      mainVideo.play();
+      videoStage.classList.add('playing');
+    });
+    mainVideo.addEventListener('play', function() { videoStage.classList.add('playing'); });
+    mainVideo.addEventListener('pause', function() { videoStage.classList.remove('playing'); });
+    mainVideo.addEventListener('ended', function() { videoStage.classList.remove('playing'); });
+  }
+})();
 
-        if(gateAudio){
-          try{
-            gateAudio.currentTime = 0;
-            gateAudio.volume = 0.9;
-            await gateAudio.play();
-          }catch(err){
-            // if playback is blocked, still proceed with visual transition
-          }
-        }
+// Gate overlay: start main player on click and fade away
+(function() {
+  var root = document.getElementById('gate-root');
+  var enter = document.getElementById('gate-enter');
+  var flash = document.getElementById('gate-flash');
+  var firefliesRoot = document.getElementById('gate-fireflies');
+  if (!root || !enter || !firefliesRoot) return;
 
-        // lightning-flash style overlay
-        flashOverlay.classList.add("flash");
+  // Fireflies
+  var F = 18;
+  var w = window.innerWidth || 1280;
+  var h = window.innerHeight || 720;
+  for (var i = 0; i < F; i++) {
+    var f = document.createElement('div');
+    f.className = 'gate-firefly';
+    var dx = Math.random() * w;
+    var dy = h - Math.random() * (h * 0.7);
+    f.style.left = dx + 'px';
+    f.style.top = dy + 'px';
+    f.style.animationDelay = (Math.random() * 8).toFixed(2) + 's';
+    f.style.animationDuration = (12 + Math.random() * 6).toFixed(2) + 's';
+    firefliesRoot.appendChild(f);
+  }
 
-        // slight delay so first hit lands before page swap
-        setTimeout(() => {
-          document.body.classList.add("fade-out");
-        }, 900);
+  var armed = false;
+  enter.addEventListener('click', function() {
+    if (armed) return;
+    armed = true;
 
-        setTimeout(() => {
-          window.location.href = "home.html";
-        }, 1900);
-      });
-    })();
+    // Kick the main player via its existing play/pause button (track 0)
+    var playBtn = document.getElementById('hg-play-pause');
+    if (playBtn) {
+      playBtn.click();
+    }
+
+    // Lightning flash
+    if (flash) {
+      flash.classList.add('flash');
+    }
+
+    // Fade out gate but leave site usable underneath
+    setTimeout(function() {
+      root.classList.add('gate-hide');
+    }, 900);
+  });
+})();
   </script>
 </body>
 </html>
-
