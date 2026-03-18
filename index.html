@@ -556,12 +556,21 @@
       font-size:.78rem;
     }
     .gate-footer span:last-child{text-align:right;}
-    .gate-eye{
+    .gate-eye-wrap{
       position:absolute;
-      inset:-40%;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:none;
+      z-index:2;
+    }
+    .gate-eye{
+      width:min(90vw, 520px);
+      height:auto;
+      aspect-ratio:200/120;
       opacity:.28;
       mix-blend-mode:screen;
-      pointer-events:none;
     }
     .gate-eye svg{
       width:100%; height:100%;
@@ -655,7 +664,8 @@
     <div class="gate-stage">
       <div class="gate-fireflies" id="gate-fireflies"></div>
       <div class="gate-flash" id="gate-flash"></div>
-      <div class="gate-card">
+      <!-- Eye lives in the stage so it stays after the card drops -->
+      <div class="gate-eye-wrap">
         <div class="gate-eye">
           <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>
@@ -689,6 +699,8 @@
             </g>
           </svg>
         </div>
+      </div>
+      <div class="gate-card">
         <div class="gate-eyebrow">EchoVerse entry gate</div>
         <h1 class="gate-title">Every pond’s got its monster.</h1>
         <p class="gate-sub">
